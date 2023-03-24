@@ -1,3 +1,6 @@
+using LMS.DAL.Entities;
+using Microsoft.EntityFrameworkCore;
+
 namespace LMS.API
 {
     public class Program
@@ -12,6 +15,15 @@ namespace LMS.API
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddDbContext<ApplicationDbContextHenry>(opts =>
+            {
+                var defaultConn = builder.Configuration.GetSection("ConnectionStringsHenry")["DefaultConn"];
+
+                opts.UseSqlServer(defaultConn, x => x.MigrationsAssembly("LMS.DAL")
+                );
+
+            });
 
             var app = builder.Build();
 

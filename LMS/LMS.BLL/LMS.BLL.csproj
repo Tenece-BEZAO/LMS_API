@@ -10,4 +10,10 @@
     <ProjectReference Include="..\LMS.DAL\LMS.DAL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Implementation\" />
+    <Folder Include="Interfaces\" />
+    <Folder Include="Infrastructure\" />
+  </ItemGroup>
+
 </Project>

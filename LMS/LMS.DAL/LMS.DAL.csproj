@@ -9,8 +9,7 @@
   <ItemGroup>
     <Folder Include="DTOs\Responses\" />
     <Folder Include="DTOs\Requests\" />
-    <Folder Include="Entities\" />
-    <Folder Include="Enums\" />
+
   </ItemGroup>
 
 </Project>

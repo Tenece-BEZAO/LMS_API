@@ -11,8 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Implementation\" />
-    <Folder Include="Interfaces\" />
+
     <Folder Include="Infrastructure\" />
   </ItemGroup>
 

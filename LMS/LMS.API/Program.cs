@@ -1,3 +1,6 @@
+using LMS.DAL;
+using Microsoft.EntityFrameworkCore;
+
 namespace LMS.API
 {
     public class Program
@@ -13,6 +16,11 @@ namespace LMS.API
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddDbContext<LMSAppDbContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConn"), m => m.MigrationsAssembly("LMS.DAL"));
+
+            });
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

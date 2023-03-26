@@ -1,6 +1,6 @@
-﻿using AppDAL.Repository;
-using LMS.DAL.Entities;
+﻿using LMS.DAL.Entities;
 using LMS.DAL.Entities.identityEntities;
+using LMS.Repository;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;

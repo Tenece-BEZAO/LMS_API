@@ -1,3 +1,4 @@
+using LMS.BLL.Extensions;
 using LMS.DAL;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,6 +22,8 @@ namespace LMS.API
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConn"), m => m.MigrationsAssembly("LMS.DAL"));
 
             });
+
+            builder.Services.RegisterServices();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -36,6 +39,7 @@ namespace LMS.API
 
 
             app.MapControllers();
+            app.AddGlobalErrorHandler();
 
             app.Run();
         }

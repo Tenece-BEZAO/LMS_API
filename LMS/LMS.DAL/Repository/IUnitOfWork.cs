@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace AppDAL.Repository;
+namespace LMS.Repository;
 
 
 public interface IUnitOfWork

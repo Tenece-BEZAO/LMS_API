@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace LMS.DAL
 {
-    public class LMSAppDbContext   : IdentityDbContext<AppUser, AppRole, string>
+    public class LMSAppDbContext : IdentityDbContext<AppUser, AppRole, string>
     {
 
         public LMSAppDbContext(DbContextOptions options): base(options)

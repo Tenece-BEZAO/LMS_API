@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AppDAL.Repository
+namespace LMS.Repository
 {
     public class UnitOfWork<TContext> : IUnitOfWork where TContext : DbContext
     {

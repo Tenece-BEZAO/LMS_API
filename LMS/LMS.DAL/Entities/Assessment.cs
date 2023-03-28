@@ -21,10 +21,5 @@ namespace LMS.DAL.Entities
 
     }
 
-    public enum AssessmentType
-    {
-        Quiz = 1,
-        Test, 
-        Exam
-    }
+   
 }

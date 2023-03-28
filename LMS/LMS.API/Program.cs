@@ -4,6 +4,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using LMS.BLL.Infrastructure;
+using LMS.DAL.Entities.identityEntities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using LMS.BLL.Infrastructures.jwt;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
 
 namespace LMS.API
 {
@@ -23,7 +29,7 @@ namespace LMS.API
             {
                 c.EnableAnnotations();
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "LEARNING MANAGEMENT SYSTEM", Version = "v1" });
-
+                
 
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
                 {
@@ -54,32 +60,32 @@ namespace LMS.API
 
 
 
-            //builder.Services.AddAuthentication(options =>
-            //{
-            //   // options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            //  //  options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            // //   options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            //})
-            //        .AddJwtBearer(jwt =>
-            //        {
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                    .AddJwtBearer(jwt =>
+                    {
 
-            //            JwtConfig jwtConfig = builder.Configuration.GetSection(nameof(JwtConfig)).Get<JwtConfig>();
-            //            var key = Encoding.ASCII.GetBytes(jwtConfig.Secret);
+                        JwtConfig jwtConfig = builder.Configuration.GetSection(nameof(JwtConfig)).Get<JwtConfig>();
+                        var key = Encoding.ASCII.GetBytes(jwtConfig.Secret);
 
-            //            jwt.SaveToken = true;
-            //            jwt.TokenValidationParameters = new TokenValidationParameters
-            //            {
-            //                ValidateIssuerSigningKey = true,
-            //                IssuerSigningKey = new SymmetricSecurityKey(key),
-            //                ValidateIssuer = true,
-            //                ValidateAudience = true,
-            //                ValidateLifetime = true,
-            //                RequireExpirationTime = true,
-            //                ValidIssuer = jwtConfig.Issuer,
-            //                ValidAudience = jwtConfig.Audience,
-            //                ClockSkew = TimeSpan.Zero
-            //            };
-            //        });
+                        jwt.SaveToken = true;
+                        jwt.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            ValidateIssuerSigningKey = true,
+                            IssuerSigningKey = new SymmetricSecurityKey(key),
+                            ValidateIssuer = true,
+                            ValidateAudience = true,
+                            ValidateLifetime = true,
+                            RequireExpirationTime = true,
+                            ValidIssuer = jwtConfig.Issuer,
+                            ValidAudience = jwtConfig.Audience,
+                            ClockSkew = TimeSpan.Zero
+                        };
+                    });
 
             builder.Services.AddAuthorization(cfg =>
             {
@@ -94,10 +100,15 @@ namespace LMS.API
 
 
 
-          //  builder.Services.AddAutoMapper(Assembly.Load("LMS.DAL.Entities"));
+
+           // builder.Services.AddScoped<AutoMapper(Assembly.Load("LMS.DAL.Entities"))>
+         //  builder.Services.AddAutoMapper()
+           builder.Services.AddAutoMapper(Assembly.Load("LMS.DAL"));
             builder.Services.RegisterServices();
             builder.Services.AddHttpContextAccessor();
-
+            builder.Services.AddIdentity<AppUser, AppRole>(options => 
+            options.SignIn.RequireConfirmedAccount = false).AddDefaultTokenProviders()
+            .AddEntityFrameworkStores<LMSAppDbContext>();
 
             builder.Services.AddCors(o => o.AddPolicy("AllowAll", builder =>
             {

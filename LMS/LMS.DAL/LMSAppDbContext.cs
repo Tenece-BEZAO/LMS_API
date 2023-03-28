@@ -1,5 +1,6 @@
 ﻿using LMS.DAL.Entities;
 using LMS.DAL.Entities.identityEntities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -18,7 +19,13 @@ namespace LMS.DAL
 
         }
 
-        
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+
+            // builder.Entity<IdentityUserRole<string>>().HasKey(u => new {u.UserId, u.RoleId});
+            builder.Entity<IdentityUserRole<string>>().HasNoKey();
+        }
+
 
         public DbSet<Course>   Courses { get; set; }
 

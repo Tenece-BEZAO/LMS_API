@@ -31,7 +31,7 @@ namespace LMS.BLL.Implementation
             _serviceFactory = serviceFactory;
             _unitOfWork = unitOfWork;
             _contextAccessor = contextAccessor;
-            _mapper = _serviceFactory.GetService<IMapper>();
+          //  _mapper = _serviceFactory.GetService<IMapper>();
             //  _emailService = _serviceFactory.GetService<IEmailService>();
             _userManager = userManager;
             _roleManager = roleManager;

@@ -21,6 +21,6 @@ namespace LMS.DAL.Entities
 
         [NotMapped]
         public virtual ICollection<Course> CompletedCourses { get; set; }
-        public virtual ICollection<Course> EnrolledCourses { get; set; }
+       // public virtual ICollection<Course> EnrolledCourses { get; set; }
     }
 }

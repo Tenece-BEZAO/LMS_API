@@ -10,6 +10,8 @@ namespace LMS.DAL.Entities.identityEntities
 {
     public class AppRole  : IdentityRole
     {
-       
+
+        public bool Active { get; set; } = true;
+        public virtual ICollection<AppUserRole> UserRoles { get; set; }
     }
 }

@@ -1,13 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore.Query;
+﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Query;
 
-namespace LMS.Repository
+namespace LMS.DAL.Repository
 {
     public class Repository<T> : IRepository<T> where T : class
     {
@@ -202,6 +197,7 @@ namespace LMS.Repository
             DeleteRange(records);
             await SaveAsync();
         }
+
         public virtual async Task DeleteRangeAsync(Expression<Func<T, bool>> predicate)
         {
             DeleteRange(predicate);
@@ -227,7 +223,8 @@ namespace LMS.Repository
             GC.SuppressFinalize(this);
         }
 
-        public virtual IEnumerable<T> GetAll(Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, params string[] includeProperties)
+        public virtual IEnumerable<T> GetAll(Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+            params string[] includeProperties)
         {
             try
             {
@@ -239,7 +236,8 @@ namespace LMS.Repository
             }
         }
 
-        public virtual async Task<IEnumerable<T>> GetAllAsync(Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null)
+        public virtual async Task<IEnumerable<T>> GetAllAsync(Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+            Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null)
         {
             try
             {
@@ -252,7 +250,9 @@ namespace LMS.Repository
             }
         }
 
-        public virtual IEnumerable<T> GetBy(Expression<Func<T, bool>> predicate = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, int? skip = null, int? take = null, params string[] includeProperties)
+        public virtual IEnumerable<T> GetBy(Expression<Func<T, bool>> predicate = null,
+            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, int? skip = null, int? take = null,
+            params string[] includeProperties)
         {
             try
             {
@@ -266,7 +266,9 @@ namespace LMS.Repository
             }
         }
 
-        public virtual async Task<IEnumerable<T>> GetByAsync(Expression<Func<T, bool>> predicate = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, int? skip = null, int? take = null, params string[] includeProperties)
+        public virtual async Task<IEnumerable<T>> GetByAsync(Expression<Func<T, bool>> predicate = null,
+            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, int? skip = null, int? take = null,
+            params string[] includeProperties)
         {
             try
             {
@@ -280,7 +282,9 @@ namespace LMS.Repository
             }
         }
 
-        public virtual async Task<IEnumerable<T>> GetByAsync(Expression<Func<T, bool>> predicate = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, int? skip = null, int? take = null, Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null)
+        public virtual async Task<IEnumerable<T>> GetByAsync(Expression<Func<T, bool>> predicate = null,
+            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, int? skip = null, int? take = null,
+            Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null)
         {
             try
             {
@@ -294,7 +298,9 @@ namespace LMS.Repository
             }
         }
 
-        public virtual async Task<T> GetSingleByAsync(Expression<Func<T, bool>> predicate = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, int? skip = null, int? take = null, Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null, bool tracking = false)
+        public virtual async Task<T> GetSingleByAsync(Expression<Func<T, bool>> predicate = null,
+            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, int? skip = null, int? take = null,
+            Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null, bool tracking = false)
         {
             try
             {
@@ -321,8 +327,9 @@ namespace LMS.Repository
         }
 
 
-
-        public virtual IQueryable<T> GetQueryable(Expression<Func<T, bool>> predicate = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, int? skip = null, int? take = null, Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null)
+        public virtual IQueryable<T> GetQueryable(Expression<Func<T, bool>> predicate = null,
+            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, int? skip = null, int? take = null,
+            Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null)
         {
             try
             {
@@ -358,8 +365,9 @@ namespace LMS.Repository
             return await _dbSet.AsNoTracking().FirstOrDefaultAsync(predicate);
         }
 
-        public async Task<T> LastAsync(Expression<Func<T, bool>> predicate = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
-       Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null, bool disableTracking = true)
+        public async Task<T> LastAsync(Expression<Func<T, bool>> predicate = null,
+            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+            Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null, bool disableTracking = true)
         {
             IQueryable<T> query = _dbSet;
             if (disableTracking) query = query.AsNoTracking();
@@ -451,7 +459,8 @@ namespace LMS.Repository
             await SaveAsync();
         }
 
-        private IQueryable<T> ConstructQuery(Func<IQueryable<T>, IOrderedQueryable<T>> orderBy, Func<IQueryable<T>, IIncludableQueryable<T, object>> include)
+        private IQueryable<T> ConstructQuery(Func<IQueryable<T>, IOrderedQueryable<T>> orderBy,
+            Func<IQueryable<T>, IIncludableQueryable<T, object>> include)
         {
             IQueryable<T> query = _dbSet;
 
@@ -465,7 +474,8 @@ namespace LMS.Repository
             return query;
         }
 
-        private IQueryable<T> ConstructQuery(Expression<Func<T, bool>> predicate, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy, int? skip, int? take, params string[] includeProperties)
+        private IQueryable<T> ConstructQuery(Expression<Func<T, bool>> predicate,
+            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy, int? skip, int? take, params string[] includeProperties)
         {
             IQueryable<T> query = _dbSet;
 
@@ -497,7 +507,9 @@ namespace LMS.Repository
             return query;
         }
 
-        private IQueryable<T> ConstructQuery(Expression<Func<T, bool>> predicate, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy, int? skip, int? take, Func<IQueryable<T>, IIncludableQueryable<T, object>> include)
+        private IQueryable<T> ConstructQuery(Expression<Func<T, bool>> predicate,
+            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy, int? skip, int? take,
+            Func<IQueryable<T>, IIncludableQueryable<T, object>> include)
         {
             IQueryable<T> query = _dbSet;
 
@@ -526,7 +538,8 @@ namespace LMS.Repository
             return query;
         }
 
-        private IQueryable<T> ConstructQueryable(Expression<Func<T, bool>> predicate = null, string orderBy = null, int? skip = null, int? take = null, Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null)
+        private IQueryable<T> ConstructQueryable(Expression<Func<T, bool>> predicate = null, string orderBy = null,
+            int? skip = null, int? take = null, Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null)
         {
             try
             {

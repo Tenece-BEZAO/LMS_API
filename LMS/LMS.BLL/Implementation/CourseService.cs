@@ -3,7 +3,7 @@ using LMS.BLL.DTOs.Response;
 using LMS.BLL.Exceptions;
 using LMS.BLL.Interfaces;
 using LMS.DAL.Entities;
-using LMS.Repository;
+using LMS.DAL.Repository;
 using NotImplementedException = LMS.BLL.Exceptions.NotImplementedException;
 
 namespace LMS.BLL.Implementation
@@ -19,6 +19,7 @@ namespace LMS.BLL.Implementation
             _unitOfWork = unitOfWork;
             _courseRepo = _unitOfWork.GetRepository<Course>();
         }
+
         public async Task<CourseDto> CreateCourse(CreateCourseDto course)
         {
             Course newCourse = new Course()
@@ -33,7 +34,6 @@ namespace LMS.BLL.Implementation
                 CourseType = course.CourseType,
                 InstructorId = course.InstructorId,
                 IsActive = false,
-
             };
             var createdCourse = await _courseRepo.AddAsync(newCourse);
             if (createdCourse == null)
@@ -41,7 +41,6 @@ namespace LMS.BLL.Implementation
 
             return new CourseDto()
             {
-
                 Title = createdCourse.Title,
                 Detail = createdCourse.Detail,
                 HeaderImageUrl = createdCourse.HeaderImageUrl,
@@ -82,13 +81,11 @@ namespace LMS.BLL.Implementation
             foundCourse.IsActive = editCourse.IsActive;
 
 
-
             Course updatedCourse = await _courseRepo.UpdateAsync(foundCourse);
             if (updatedCourse == null)
                 throw new NotImplementedException("Unable to update course");
 
             return updatedCourse;
-
         }
 
         public async Task<IEnumerable<Course>> GetAllCourse()

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LMS.DAL.Enums
 {
-
+ 
     public enum UserType
     {
         Student = 1,

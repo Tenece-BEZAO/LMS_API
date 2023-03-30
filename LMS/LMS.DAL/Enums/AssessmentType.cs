@@ -13,7 +13,7 @@ namespace LMS.DAL.Enums
         Exam
     }
 
-
+ 
     public static class AssessmentTypeExtension
     {
         public static string? GetStringValue(this AssessmentType assType)

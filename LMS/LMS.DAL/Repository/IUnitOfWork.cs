@@ -1,7 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace LMS.Repository;
-
+﻿namespace LMS.DAL.Repository;
 
 public interface IUnitOfWork
 {

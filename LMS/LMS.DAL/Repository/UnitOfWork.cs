@@ -1,11 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace LMS.Repository
+namespace LMS.DAL.Repository
 {
     public class UnitOfWork<TContext> : IUnitOfWork where TContext : DbContext
     {
@@ -40,6 +35,5 @@ namespace LMS.Repository
         {
             return await _context.SaveChangesAsync();
         }
-
     }
 }

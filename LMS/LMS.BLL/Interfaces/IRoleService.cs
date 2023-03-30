@@ -1,10 +1,11 @@
 ﻿using LMS.BLL.DTOs.Request;
+using LMS.BLL.DTOs.Response;
 using LMS.DAL.Entities.identityEntities;
 
 public interface IRoleService
 {
     Task AddUserToRole(AddUserToRoleRequest request);
-    Task CreateRole(RoleDto request);
+    Task<RoleResult> CreateRole(RoleDto request);
     Task DeleteRole(RoleDto request);
     Task EditRole(string id, RoleDto request);
     Task RemoveUserFromRole(AddUserToRoleRequest request);

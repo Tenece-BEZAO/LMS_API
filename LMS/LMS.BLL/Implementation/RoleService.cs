@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using AutoMapper;
 using LMS.BLL.DTOs.Request;
+using LMS.BLL.DTOs.Response;
 using LMS.BLL.Interfaces;
 using LMS.DAL.Entities.identityEntities;
 using LMS.Repository;
@@ -42,16 +43,21 @@ public class RoleService : IRoleService
 
     }
 
-    public async Task CreateRole(RoleDto request)
+    public async Task<RoleResult> CreateRole(RoleDto request)
     {
         AppRole role = await _roleManager.FindByNameAsync(request.Name.Trim().ToLower());
 
         if (role != null)
             throw new InvalidOperationException($"Role with name {request.Name} already exist");
 
-        AppRole roleToCreate = _mapper.Map<AppRole>(request);
+       // AppRole roleToCreate = _mapper.Map<AppRole>(request);
 
-        await _roleManager.CreateAsync(roleToCreate);
+       var result =  await _roleManager.CreateAsync(new AppRole { Name = request.Name});
+
+        if (!result.Succeeded)
+            throw new InvalidOperationException($"Role with name {request.Name} could not be created");
+
+        return new RoleResult { result = true, message = $"Role {request.Name} was created successfully" };
 
 
 
@@ -90,8 +96,8 @@ public class RoleService : IRoleService
         if (user == null)
             throw new InvalidOperationException($"User {request.UserName} does not exist");
 
-        bool userIsInRole = await _roleRepo.GetQueryable().Include(x => x.UserRoles).ThenInclude(x => x.Role)
-            .AnyAsync(r => r.UserRoles.Any(ur => ur.Role.Active));
+        bool userIsInRole = await _roleRepo.GetQueryable().Include(x => x.UserRoles)
+            .AnyAsync(r => r.UserRoles.Any());
 
 
         if (!userIsInRole)

@@ -16,11 +16,10 @@ namespace LMS.DAL.Entities
        
         public string Country { get; set; }
         public string State { get; set; }
-        public int CourseId { get; set; }
-        // public Course Courses { get; set; }
 
-        [NotMapped]
-        public virtual ICollection<Course> CompletedCourses { get; set; }
-       // public virtual ICollection<Course> EnrolledCourses { get; set; }
+        public virtual Assessment Assessment { get; set; }
+
+        public virtual ICollection<EnrolledStudentsCourses> EnrolledCourses { get; set; }
+        public virtual ICollection<CompletedStudentsCourses> CompletedCourses { get; set; }
     }
 }

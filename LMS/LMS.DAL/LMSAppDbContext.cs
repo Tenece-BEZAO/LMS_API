@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace LMS.DAL
 {
-    public class LMSAppDbContext : IdentityDbContext<AppUser, AppRole, string>
+    public class LMSAppDbContext : IdentityDbContext<AppUser, AppRole, string, AppUserClaim, AppUserRole, IdentityUserLogin<string>, AppRoleClaim, IdentityUserToken<string>>
     {
 
         public LMSAppDbContext(DbContextOptions options): base(options)
@@ -22,8 +22,10 @@ namespace LMS.DAL
         protected override void OnModelCreating(ModelBuilder builder)
         {
 
-            // builder.Entity<IdentityUserRole<string>>().HasKey(u => new {u.UserId, u.RoleId});
+            builder.Entity<IdentityUserLogin<string>>().HasNoKey();
             builder.Entity<IdentityUserRole<string>>().HasNoKey();
+            builder.Entity<IdentityUserToken<string>>().HasNoKey();
+
         }
 
 

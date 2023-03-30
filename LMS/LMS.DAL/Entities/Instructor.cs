@@ -13,7 +13,6 @@ namespace LMS.DAL.Entities
         public string UserId { get; set; }
         public AppUser User { get; set; }
         public string Fullname { get; set; }
-
         public virtual ICollection<Course> CreatedCourses { get; set; }
     }
 }

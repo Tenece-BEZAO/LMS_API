@@ -1,38 +1,45 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace LMS.DAL.Repository;
-
-public class UnitOfWork<TContext> : IUnitOfWork where TContext : DbContext
+namespace LMS.Repository
 {
-    private Dictionary<Type, object> _repositories;
-    private readonly TContext _context;
-
-    public UnitOfWork(TContext context)
+    public class UnitOfWork<TContext> : IUnitOfWork where TContext : DbContext
     {
-        _context = context ?? throw new ArgumentNullException(nameof(context));
-    }
+        private Dictionary<Type, object> _repositories;
+        private readonly TContext _context;
 
-    public IRepository<TEntity> GetRepository<TEntity>() where TEntity : class
-    {
-        if (_repositories == null) _repositories = new Dictionary<Type, object>();
+        public UnitOfWork(TContext context)
+        {
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+        }
 
-        var type = typeof(TEntity);
-        if (!_repositories.ContainsKey(type)) _repositories[type] = new Repository<TEntity>(_context);
-        return (IRepository<TEntity>)_repositories[type];
-    }
+        public IRepository<TEntity> GetRepository<TEntity>() where TEntity : class
+        {
+            if (_repositories == null) _repositories = new Dictionary<Type, object>();
 
-    public int SaveChanges()
-    {
-        return _context.SaveChanges();
-    }
+            var type = typeof(TEntity);
+            if (!_repositories.ContainsKey(type)) _repositories[type] = new Repository<TEntity>(_context);
+            return (IRepository<TEntity>)_repositories[type];
+        }
 
-    public void Dispose()
-    {
-        _context?.Dispose();
-    }
+        public int SaveChanges()
+        {
+            return _context.SaveChanges();
+        }
 
-    public async Task<int> SaveChangesAsync()
-    {
-        return await _context.SaveChangesAsync();
+        public void Dispose()
+        {
+            _context?.Dispose();
+        }
+
+        public async Task<int> SaveChangesAsync()
+        {
+            return await _context.SaveChangesAsync();
+        }
+
     }
 }

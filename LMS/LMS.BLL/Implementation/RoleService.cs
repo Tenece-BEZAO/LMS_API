@@ -1,12 +1,13 @@
-﻿using System.Security.Claims;
-using AutoMapper;
+﻿using AutoMapper;
 using LMS.BLL.DTOs.Request;
 using LMS.BLL.DTOs.Response;
 using LMS.BLL.Interfaces;
 using LMS.DAL.Entities.identityEntities;
-using LMS.Repository;
+using LMS.DAL.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+
+namespace LMS.BLL.Implementation;
 
 public class RoleService : IRoleService
 {
@@ -14,6 +15,7 @@ public class RoleService : IRoleService
     private readonly RoleManager<AppRole> _roleManager;
     private readonly IServiceFactory _serviceFactory;
     private readonly IMapper _mapper;
+
     private readonly IRepository<AppRole> _roleRepo;
     //  private readonly IRepository<ApplicationRoleClaim> _roleClaimRepo;
 
@@ -39,8 +41,6 @@ public class RoleService : IRoleService
             throw new InvalidOperationException($"User '{request.UserName}' does not Exist!");
 
         await _userManager.AddToRoleAsync(user, request.Role.ToLower().Trim());
-
-
     }
 
 
@@ -53,18 +53,14 @@ public class RoleService : IRoleService
             throw new InvalidOperationException($"Role with name {request.Name} already exist");
 
 
-       // AppRole roleToCreate = _mapper.Map<AppRole>(request);
+        // AppRole roleToCreate = _mapper.Map<AppRole>(request);
 
-       var result =  await _roleManager.CreateAsync(new AppRole { Name = request.Name});
+        var result = await _roleManager.CreateAsync(new AppRole { Name = request.Name });
 
         if (!result.Succeeded)
             throw new InvalidOperationException($"Role with name {request.Name} could not be created");
 
         return new RoleResult { result = true, message = $"Role {request.Name} was created successfully" };
-
-
-
-
     }
 
     public async Task DeleteRole(RoleDto request)
@@ -75,9 +71,6 @@ public class RoleService : IRoleService
             throw new InvalidOperationException($"Role {request.Name} does not Exist");
 
         await _roleManager.DeleteAsync(role);
-
-
-
     }
 
     public async Task EditRole(string id, RoleDto request)
@@ -89,8 +82,6 @@ public class RoleService : IRoleService
         AppRole roleUpdate = _mapper.Map(request, role);
 
         await _roleManager.UpdateAsync(roleUpdate);
-
-
     }
 
     public async Task RemoveUserFromRole(AddUserToRoleRequest request)
@@ -105,13 +96,10 @@ public class RoleService : IRoleService
             .AnyAsync(r => r.UserRoles.Any());
 
 
-
         if (!userIsInRole)
             throw new InvalidOperationException($"User not in {request.Role} Role");
 
         await _userManager.RemoveFromRoleAsync(user, request.Role);
-
-
     }
 
     public async Task<IEnumerable<string>> GetUserRoles(string userName)
@@ -127,81 +115,77 @@ public class RoleService : IRoleService
         return userRoles;
     }
 
-    public async Task<IEnumerable<AppRole>> GetAllRoles() {
-    
+    public async Task<IEnumerable<AppRole>> GetAllRoles()
+    {
         return _roleManager.Roles.ToList();
     }
-
-   
 
 
     //public async Task<PagedResponse<RoleResponse>> GetAllRoles(RoleRequestDto request)
     //{
 
-        //    IQueryable<AppRole> roleQueryable = _roleRepo.GetQueryable().Include(x => x.UserRoles)
-        //        .ThenInclude(x => x.Role).Include(x => x.RoleClaims);
+    //    IQueryable<AppRole> roleQueryable = _roleRepo.GetQueryable().Include(x => x.UserRoles)
+    //        .ThenInclude(x => x.Role).Include(x => x.RoleClaims);
 
-        //    roleQueryable = !request.Active ? roleQueryable : roleQueryable.Where(r => r.Active);
+    //    roleQueryable = !request.Active ? roleQueryable : roleQueryable.Where(r => r.Active);
 
-        //    IQueryable<RoleResponse> roleResponseQueryable = roleQueryable.Select(s => new RoleResponse
-        //    {
-        //        Name = s.Name,
-        //        ClaimCount = s.RoleClaims.Count,
-        //        Active = s.Active
-        //    });
+    //    IQueryable<RoleResponse> roleResponseQueryable = roleQueryable.Select(s => new RoleResponse
+    //    {
+    //        Name = s.Name,
+    //        ClaimCount = s.RoleClaims.Count,
+    //        Active = s.Active
+    //    });
 
-        //    PagedList<RoleResponse> pagedList = !string.IsNullOrWhiteSpace(request.SearchTerm)
-        //        ? await roleResponseQueryable.GetPagedItems(request,
-        //            searchExpression: r => r.Name.ToLower().Contains(request.SearchTerm.ToLower()) && r.Active)
-        //        : await roleResponseQueryable.GetPagedItems(request);
+    //    PagedList<RoleResponse> pagedList = !string.IsNullOrWhiteSpace(request.SearchTerm)
+    //        ? await roleResponseQueryable.GetPagedItems(request,
+    //            searchExpression: r => r.Name.ToLower().Contains(request.SearchTerm.ToLower()) && r.Active)
+    //        : await roleResponseQueryable.GetPagedItems(request);
 
-        //    return _mapper.Map<PagedResponse<RoleResponse>>(pagedList);
+    //    return _mapper.Map<PagedResponse<RoleResponse>>(pagedList);
 
-        //}
+    //}
 
-        //public async Task<IEnumerable<MenuClaimsResponse>> GetRoleClaims(string roleName)
-        //{
-        //    IEnumerable<string> claimsInRole =
-        //        (await _roleRepo.GetQueryable().Include(x => x.UserRoles)
-        //            .Include(x => x.RoleClaims).Where(r => r.Name.ToLower() == roleName.ToLower() && r.Active)
-        //            .FirstOrDefaultAsync())?.RoleClaims.Select(s => s.ClaimValue) ?? new List<string>();
-
-
-        //    IEnumerable<MenuClaimsResponse> menuClaims =
-        //        (await _menuRepo.GetQueryable(m => m.Claims != null && m.Active).ToListAsync())
-        //        .Where(m => claimsInRole != null && m.Claims.Intersect(claimsInRole).Any()).GroupBy(x => x.Name).Select(s =>
-        //            new MenuClaimsResponse
-        //            {
-        //                Menu = s.Key,
-        //                Claims = s.SelectMany(_ => _.Claims).ToList()
-        //            });
-
-        //    return menuClaims;
-        //}
-
-        //public async Task UpdateRoleClaims(UpdateRoleClaimsDto request)
-        //{
-        //    ApplicationRole? role = await _roleRepo.GetQueryable().Include(x => x.RoleClaims).FirstOrDefaultAsync(r => r.Name.ToLower() == request.Role.ToLower());
-
-        //    if (role == null)
-        //        throw new InvalidOperationException("Role does not exist");
-
-        //    role.RoleClaims.Clear();
-
-        //    IList<ApplicationRoleClaim> roleClaims = new List<ApplicationRoleClaim>(request.Claims.Count);
-
-        //    foreach (string requestClaim in request.Claims)
-        //    {
-        //        roleClaims.Add(new ApplicationRoleClaim { ClaimType = ClaimTypes.Name, ClaimValue = requestClaim, RoleId = role.Id });
-
-        //    }
-
-        //    await _roleClaimRepo.AddRangeAsync(roleClaims);
-
-        //    await _unitOfWork.SaveChangesAsync();
+    //public async Task<IEnumerable<MenuClaimsResponse>> GetRoleClaims(string roleName)
+    //{
+    //    IEnumerable<string> claimsInRole =
+    //        (await _roleRepo.GetQueryable().Include(x => x.UserRoles)
+    //            .Include(x => x.RoleClaims).Where(r => r.Name.ToLower() == roleName.ToLower() && r.Active)
+    //            .FirstOrDefaultAsync())?.RoleClaims.Select(s => s.ClaimValue) ?? new List<string>();
 
 
-        //}
+    //    IEnumerable<MenuClaimsResponse> menuClaims =
+    //        (await _menuRepo.GetQueryable(m => m.Claims != null && m.Active).ToListAsync())
+    //        .Where(m => claimsInRole != null && m.Claims.Intersect(claimsInRole).Any()).GroupBy(x => x.Name).Select(s =>
+    //            new MenuClaimsResponse
+    //            {
+    //                Menu = s.Key,
+    //                Claims = s.SelectMany(_ => _.Claims).ToList()
+    //            });
+
+    //    return menuClaims;
+    //}
+
+    //public async Task UpdateRoleClaims(UpdateRoleClaimsDto request)
+    //{
+    //    ApplicationRole? role = await _roleRepo.GetQueryable().Include(x => x.RoleClaims).FirstOrDefaultAsync(r => r.Name.ToLower() == request.Role.ToLower());
+
+    //    if (role == null)
+    //        throw new InvalidOperationException("Role does not exist");
+
+    //    role.RoleClaims.Clear();
+
+    //    IList<ApplicationRoleClaim> roleClaims = new List<ApplicationRoleClaim>(request.Claims.Count);
+
+    //    foreach (string requestClaim in request.Claims)
+    //    {
+    //        roleClaims.Add(new ApplicationRoleClaim { ClaimType = ClaimTypes.Name, ClaimValue = requestClaim, RoleId = role.Id });
+
+    //    }
+
+    //    await _roleClaimRepo.AddRangeAsync(roleClaims);
+
+    //    await _unitOfWork.SaveChangesAsync();
 
 
+    //}
 }

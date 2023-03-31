@@ -2,17 +2,12 @@
 using LMS.BLL.Interfaces;
 using LMS.DAL.Entities;
 using LMS.DAL.Entities.identityEntities;
-using LMS.Repository;
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using LMS.DAL.Repository;
 
 namespace LMS.BLL.Implementation
 {
-    public class InstructorService    : IInstructorService
+    public class InstructorService : IInstructorService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly UserManager<AppUser> _userManager;
@@ -23,7 +18,7 @@ namespace LMS.BLL.Implementation
         {
             _unitOfWork = unitOfWork;
             _userManager = userManager;
-            _repository =  _unitOfWork.GetRepository<Instructor>();
+            _repository = _unitOfWork.GetRepository<Instructor>();
         }
 
         public Task<InstructorDTO> CreateInstructor(InstructorDTO instructor)

@@ -77,9 +77,10 @@ namespace LMS.BLL.Implementation
             //  await _userManager.SetTwoFactorEnabledAsync(user, true);
 
 
-            AddUserToRoleRequest userRole = new() { UserName = user.UserName, Role = request.Role };
+       //AddUserToRoleRequest userRole = new() { UserName = user.UserName, Role = request.Role };
 
-            await _serviceFactory.GetService<IRoleService>().AddUserToRole(userRole);
+       //await _serviceFactory.GetService<IRoleService>().AddUserToRole(userRole);
+
 
             //UserMailRequest userMailDto = new()
             //{
@@ -92,6 +93,22 @@ namespace LMS.BLL.Implementation
         }
 
         public Task<AuthenticationResponse> UserLogin(LoginRequest request)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        Task<string> IAuthenticationService.ChangePassword(string userId, ChangePasswordRequest request)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<UserResponse> IAuthenticationService.GetUser(string userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<string> IAuthenticationService.ResetPassword(ResetPasswordRequest request)
         {
             throw new NotImplementedException();
         }

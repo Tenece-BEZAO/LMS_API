@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace LMS.DAL.Entities.identityEntities
 {
+
     public class AppUserRole : IdentityUserRole<string>
     {
        //public string UserId { get; set; }
@@ -18,5 +19,6 @@ namespace LMS.DAL.Entities.identityEntities
 
        //// [ForeignKey("RoleId")]
        // public virtual AppRole Role { get; set; }
+
     }
 }

@@ -16,5 +16,6 @@ namespace LMS.DAL.Entities.identityEntities
 
         [NotMapped]
         public virtual ICollection<IdentityUserRole<string>> UserRoles { get; set; }
+
     }
 }

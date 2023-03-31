@@ -43,12 +43,15 @@ public class RoleService : IRoleService
 
     }
 
+
     public async Task<RoleResult> CreateRole(RoleDto request)
+
     {
         AppRole role = await _roleManager.FindByNameAsync(request.Name.Trim().ToLower());
 
         if (role != null)
             throw new InvalidOperationException($"Role with name {request.Name} already exist");
+
 
        // AppRole roleToCreate = _mapper.Map<AppRole>(request);
 
@@ -58,6 +61,7 @@ public class RoleService : IRoleService
             throw new InvalidOperationException($"Role with name {request.Name} could not be created");
 
         return new RoleResult { result = true, message = $"Role {request.Name} was created successfully" };
+
 
 
 
@@ -96,8 +100,10 @@ public class RoleService : IRoleService
         if (user == null)
             throw new InvalidOperationException($"User {request.UserName} does not exist");
 
+
         bool userIsInRole = await _roleRepo.GetQueryable().Include(x => x.UserRoles)
             .AnyAsync(r => r.UserRoles.Any());
+
 
 
         if (!userIsInRole)

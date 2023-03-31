@@ -227,6 +227,7 @@ namespace LMS.DAL.Migrations
 
             modelBuilder.Entity("LMS.DAL.Entities.identityEntities.AppRoleClaim", b =>
 
+
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -234,6 +235,7 @@ namespace LMS.DAL.Migrations
 
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
 
                     b.Property<string>("ClaimType")
 

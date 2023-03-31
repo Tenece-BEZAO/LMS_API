@@ -11,17 +11,15 @@ using System.Threading.Tasks;
 
 namespace LMS.DAL
 {
-    public class LMSAppDbContext : IdentityDbContext<AppUser, AppRole, string, AppUserClaim, AppUserRole, IdentityUserLogin<string>, AppRoleClaim, IdentityUserToken<string>>
+    public class LMSAppDbContext : IdentityDbContext<AppUser, AppRole, string, AppUserClaim, AppUserRole,
+        IdentityUserLogin<string>, AppRoleClaim, IdentityUserToken<string>>
     {
-
-        public LMSAppDbContext(DbContextOptions options): base(options)
+        public LMSAppDbContext(DbContextOptions options) : base(options)
         {
-
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-
             builder.Entity<IdentityUserLogin<string>>().HasNoKey();
             builder.Entity<IdentityUserRole<string>>().HasNoKey();
             builder.Entity<IdentityUserToken<string>>().HasNoKey();
@@ -57,24 +55,19 @@ namespace LMS.DAL
                 .HasForeignKey(fk => fk.CourseId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<Course>().Property(c=>c.Price).HasConversion(typeof(double));
+            builder.Entity<Course>().Property(c => c.Price).HasConversion(typeof(double));
 
 
             builder.Entity<Assessment>().Property(c => c.Score).HasConversion(typeof(decimal));
-
-
         }
 
 
-
-
-        public DbSet<Course>   Courses { get; set; }
+        public DbSet<Course> Courses { get; set; }
 
         public DbSet<Student> Students { get; set; }
 
         public DbSet<Instructor> Instructors { get; set; }
 
         public DbSet<Assessment> Assessments { get; set; }
-
     }
 }

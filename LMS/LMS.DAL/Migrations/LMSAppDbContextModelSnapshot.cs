@@ -344,7 +344,7 @@ namespace LMS.DAL.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Instructors");
-                });
+                }));
 
             modelBuilder.Entity("LMS.DAL.Entities.Student", b =>
                 {

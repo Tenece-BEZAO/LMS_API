@@ -42,12 +42,16 @@ namespace LMS.API.Controllers
         [Route("create-course")]
         public async Task<IActionResult> CreateCourse([FromBody] CreateCourseDto course)
         {
-            var result = await _courseService.CreateCourse(course);
-            if (result == null)
-                return BadRequest("Uable to complete request");
+            if (ModelState.IsValid)
+            {
+                var result = await _courseService.CreateCourse(course);
+                if (result == null)
+                    return BadRequest("Uable to complete request");
 
 
-            return Ok(result);
+                return Ok(result);
+            }
+            return BadRequest("Unable to complete request");
         }
 
         [HttpDelete]
@@ -67,12 +71,35 @@ namespace LMS.API.Controllers
         [Route("update-course")]
         public async Task<IActionResult> UpdateCourse([FromBody] EditCourseDto editCourse)
         {
-            Course course = await _courseService.EditCourse(editCourse);
-            if (course == null)
+            if (ModelState.IsValid)
             {
-                return BadRequest("something went wrong");
+                Course course = await _courseService.EditCourse(editCourse);
+                if (course == null)
+                {
+                    return BadRequest("something went wrong");
+                }
+                return Ok(course);
             }
-            return Ok(course);
+            return BadRequest("Unable to complete request");
         }
+
+        [HttpPost]
+        [Route("student-enroll-for-course")]
+        public async Task<IActionResult> EnrollCourse([FromBody] CourseEnrollDto courseEnrollDto)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _courseService.EnrollForACourse(courseEnrollDto);
+                if (result == null)
+                    return BadRequest("unale to complete request");
+
+                return Ok(result);
+
+            }
+            return BadRequest(ModelState);
+        }
+
+
+
     }
 }

@@ -176,7 +176,7 @@ namespace LMS.DAL.Migrations
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Detail = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     HeaderImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    Price = table.Column<double>(type: "float", nullable: true),
                     VideoResourceUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TextResourceUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AdditionalResourcesUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -207,7 +207,7 @@ namespace LMS.DAL.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AssessmentType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AssessmentScore = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Score = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     StudentId = table.Column<int>(type: "int", nullable: false),
                     CourseId = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -223,13 +223,13 @@ namespace LMS.DAL.Migrations
                         column: x => x.CourseId,
                         principalTable: "Courses",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Assessments_Students_StudentId",
                         column: x => x.StudentId,
                         principalTable: "Students",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -253,13 +253,13 @@ namespace LMS.DAL.Migrations
                         column: x => x.CourseId,
                         principalTable: "Courses",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_CompletedStudentsCourses_Students_StudentId",
                         column: x => x.StudentId,
                         principalTable: "Students",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -283,26 +283,24 @@ namespace LMS.DAL.Migrations
                         column: x => x.CourseId,
                         principalTable: "Courses",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_EnrolledStudentsCourses_Students_StudentId",
                         column: x => x.StudentId,
                         principalTable: "Students",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Assessments_CourseId",
                 table: "Assessments",
-                column: "CourseId",
-                unique: true);
+                column: "CourseId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Assessments_StudentId",
                 table: "Assessments",
-                column: "StudentId",
-                unique: true);
+                column: "StudentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CompletedStudentsCourses_CourseId",

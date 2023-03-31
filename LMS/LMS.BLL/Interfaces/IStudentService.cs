@@ -9,7 +9,7 @@ namespace LMS.BLL.Interfaces
 {
     public interface IStudentService
     {
-        Task<StudentDTO> CreateStudent(StudentDTO student);
+        Task<string> CreateStudent(StudentDTO student);
         Task<StudentDTO> EditStudent(StudentDTO student);
         Task<StudentDTO> GetStudentById(int student);
 

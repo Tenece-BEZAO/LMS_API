@@ -30,7 +30,10 @@ namespace LMS.DAL.Entities
         public virtual Instructor CourseOwner { get; set; }
         public bool IsActive { get; set; }
 
-        public virtual Assessment Assessment { get; set; }
+      //  public virtual Assessment Assessment { get; set; }
+
+        public virtual ICollection<Assessment> Assessments { get; set; }
+
         public virtual ICollection<EnrolledStudentsCourses> EnrolledStudents { get; set; }
 
         public virtual ICollection<CompletedStudentsCourses> StudentsCompleted { get; set; }

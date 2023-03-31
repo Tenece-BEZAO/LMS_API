@@ -30,9 +30,6 @@ namespace LMS.DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<decimal>("AssessmentScore")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<string>("AssessmentType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -49,6 +46,9 @@ namespace LMS.DAL.Migrations
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<decimal>("Score")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<int>("StudentId")
                         .HasColumnType("int");
 
@@ -61,11 +61,9 @@ namespace LMS.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CourseId")
-                        .IsUnique();
+                    b.HasIndex("CourseId");
 
-                    b.HasIndex("StudentId")
-                        .IsUnique();
+                    b.HasIndex("StudentId");
 
                     b.ToTable("Assessments");
                 });
@@ -142,8 +140,8 @@ namespace LMS.DAL.Migrations
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal?>("Price")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double?>("Price")
+                        .HasColumnType("float");
 
                     b.Property<string>("TextResourceUrl")
                         .HasColumnType("nvarchar(max)");
@@ -457,15 +455,15 @@ namespace LMS.DAL.Migrations
             modelBuilder.Entity("LMS.DAL.Entities.Assessment", b =>
                 {
                     b.HasOne("LMS.DAL.Entities.Course", "CourseFor")
-                        .WithOne("Assessment")
-                        .HasForeignKey("LMS.DAL.Entities.Assessment", "CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .WithMany("Assessments")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("LMS.DAL.Entities.Student", "Student")
-                        .WithOne("Assessment")
-                        .HasForeignKey("LMS.DAL.Entities.Assessment", "StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .WithMany("Assessments")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("CourseFor");
@@ -475,21 +473,21 @@ namespace LMS.DAL.Migrations
 
             modelBuilder.Entity("LMS.DAL.Entities.CompletedStudentsCourses", b =>
                 {
-                    b.HasOne("LMS.DAL.Entities.Course", "Courses")
+                    b.HasOne("LMS.DAL.Entities.Course", "Course")
                         .WithMany("StudentsCompleted")
                         .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("LMS.DAL.Entities.Student", "Students")
+                    b.HasOne("LMS.DAL.Entities.Student", "Student")
                         .WithMany("CompletedCourses")
                         .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Courses");
+                    b.Navigation("Course");
 
-                    b.Navigation("Students");
+                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("LMS.DAL.Entities.Course", b =>
@@ -505,21 +503,21 @@ namespace LMS.DAL.Migrations
 
             modelBuilder.Entity("LMS.DAL.Entities.EnrolledStudentsCourses", b =>
                 {
-                    b.HasOne("LMS.DAL.Entities.Course", "Courses")
+                    b.HasOne("LMS.DAL.Entities.Course", "Course")
                         .WithMany("EnrolledStudents")
                         .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("LMS.DAL.Entities.Student", "Students")
+                    b.HasOne("LMS.DAL.Entities.Student", "Student")
                         .WithMany("EnrolledCourses")
                         .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Courses");
+                    b.Navigation("Course");
 
-                    b.Navigation("Students");
+                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("LMS.DAL.Entities.Instructor", b =>
@@ -546,8 +544,7 @@ namespace LMS.DAL.Migrations
 
             modelBuilder.Entity("LMS.DAL.Entities.Course", b =>
                 {
-                    b.Navigation("Assessment")
-                        .IsRequired();
+                    b.Navigation("Assessments");
 
                     b.Navigation("EnrolledStudents");
 
@@ -561,8 +558,7 @@ namespace LMS.DAL.Migrations
 
             modelBuilder.Entity("LMS.DAL.Entities.Student", b =>
                 {
-                    b.Navigation("Assessment")
-                        .IsRequired();
+                    b.Navigation("Assessments");
 
                     b.Navigation("CompletedCourses");
 

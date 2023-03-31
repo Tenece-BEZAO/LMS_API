@@ -21,7 +21,8 @@ namespace LMS.BLL.Extensions
            // services.AddTransient<IAuthorizationHandler, CustomAuthorizationHandler>();
             services.AddTransient<IUnitOfWork, UnitOfWork<LMSAppDbContext>>();
             services.AddTransient<IServiceFactory, ServiceFactory>();
-          
+            services.AddTransient<IInstructorService, InstructorService>();
+            services.AddTransient<ICourseService, CourseService>();          
             //services.AddTransient<IEmailService, EmailService>();
             services.AddTransient<Interfaces.IAuthenticationService, Implementation.AuthenticationService>();
             services.AddTransient<IRoleService, RoleService>();

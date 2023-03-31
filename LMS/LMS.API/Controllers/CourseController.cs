@@ -22,7 +22,7 @@ namespace LMS.API.Controllers
         {
             var result = await _courseService.GetAllCourse();
             if (result == null)
-                return BadRequest();
+                return BadRequest("Uable to complete request");
 
             return Ok(result);
         }
@@ -33,7 +33,7 @@ namespace LMS.API.Controllers
         {
             var result = await _courseService.GetCourseById(id);
             if (result == null)
-                return BadRequest();
+                return BadRequest("Uable to complete request");
 
             return Ok(result);
         }
@@ -44,7 +44,7 @@ namespace LMS.API.Controllers
         {
             var result = await _courseService.CreateCourse(course);
             if (result == null)
-                return BadRequest();
+                return BadRequest("Uable to complete request");
 
 
             return Ok(result);
@@ -57,7 +57,7 @@ namespace LMS.API.Controllers
             var result = await _courseService.DeleteCourse(id);
             if (!result)
             {
-                return BadRequest();
+                return BadRequest("Uable to complete request");
             }
 
             return Ok("Course was deleted successfully");

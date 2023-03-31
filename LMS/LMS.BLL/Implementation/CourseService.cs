@@ -12,15 +12,21 @@ namespace LMS.BLL.Implementation
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IRepository<Course> _courseRepo;
+        private readonly IRepository<Instructor> _instructorRepo;
 
 
         public CourseService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
             _courseRepo = _unitOfWork.GetRepository<Course>();
+            _instructorRepo = _unitOfWork.GetRepository<Instructor>();
         }
         public async Task<CourseDto> CreateCourse(CreateCourseDto course)
         {
+            var Instructor = _instructorRepo.GetByIdAsync(course.InstructorId);
+            if (Instructor == null)
+                throw new NotFoundException("Invalid instructor Id");
+
             Course newCourse = new Course()
             {
                 Title = course.Title,
@@ -66,6 +72,10 @@ namespace LMS.BLL.Implementation
 
         public async Task<Course> EditCourse(EditCourseDto editCourse)
         {
+            var Instructor = _instructorRepo.GetByIdAsync(editCourse.InstructorId);
+            if (Instructor == null)
+                throw new NotFoundException("Invalid instructor Id");
+
             var foundCourse = await _courseRepo.GetByIdAsync(editCourse.Id);
             if (foundCourse == null)
                 throw new NotFoundException("Course not found");
@@ -78,7 +88,6 @@ namespace LMS.BLL.Implementation
             foundCourse.TextResourceUrl = editCourse.TextResourceUrl;
             foundCourse.AdditionalResourcesUrl = editCourse.AdditionalResourcesUrl;
             foundCourse.CourseType = editCourse.CourseType;
-            foundCourse.InstructorId = editCourse.InstructorId;
             foundCourse.IsActive = editCourse.IsActive;
 
 
@@ -89,6 +98,11 @@ namespace LMS.BLL.Implementation
 
             return updatedCourse;
 
+        }
+
+        public Task<string> EnrollForACourse(CourseEnrollDto courseEnrollDto)
+        {
+            throw new System.NotImplementedException();
         }
 
         public async Task<IEnumerable<Course>> GetAllCourse()
@@ -119,6 +133,16 @@ namespace LMS.BLL.Implementation
                 InstructorId = course.InstructorId,
                 IsActive = course.IsActive
             };
+        }
+
+        public Task<IEnumerable<Course>> GetUserCompletedCourses(string userId)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task<IEnumerable<Course>> GetUserEnrolledCourses(string userId)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

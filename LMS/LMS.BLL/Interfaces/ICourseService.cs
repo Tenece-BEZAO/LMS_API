@@ -14,9 +14,15 @@ namespace LMS.BLL.Interfaces
         Task<CourseDto> CreateCourse(CreateCourseDto course);
         Task<Course> EditCourse(EditCourseDto editCourse);
         Task<CourseDto> GetCourseById(int courseId);
-
         Task<IEnumerable<Course>> GetAllCourse();
         Task<bool> DeleteCourse(int id);
+        Task<string> EnrollForACourse(CourseEnrollDto courseEnrollDto);
+        Task<IEnumerable<Course>> GetUserEnrolledCourses(string userId);
+
+        Task<IEnumerable<Course>> GetUserCompletedCourses(string userId);
+        Task<IEnumerable<Course>> GetAllCompletedCourses();
+
+
 
     }
 }

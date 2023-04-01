@@ -30,11 +30,6 @@ namespace LMS.DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-
-                   // b.Property<decimal>("AssessmentScore")
-                      //  .HasColumnType("decimal(18,2)");
-
-
                     b.Property<string>("AssessmentType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -226,25 +221,14 @@ namespace LMS.DAL.Migrations
                 });
 
             modelBuilder.Entity("LMS.DAL.Entities.identityEntities.AppRoleClaim", b =>
-
-
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-
                     b.Property<string>("ClaimType")
-
-                    //b.Property<bool>("Active")
-                       // .HasColumnType("bit");
-
-                   // b.Property<string>("ConcurrencyStamp")
-                      //  .IsConcurrencyToken()
-
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ClaimValue")
@@ -310,92 +294,7 @@ namespace LMS.DAL.Migrations
                     b.ToTable("Users");
                 });
 
-
             modelBuilder.Entity("LMS.DAL.Entities.identityEntities.AppUserClaim", b =>
-
-            modelBuilder.Entity("LMS.DAL.Entities.Instructor", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Fullname")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Instructors");
-                }));
-
-            modelBuilder.Entity("LMS.DAL.Entities.Student", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Country")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("CourseId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("State")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Students");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
-
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -521,21 +420,10 @@ namespace LMS.DAL.Migrations
                     b.Property<string>("RoleId")
                         .HasColumnType("nvarchar(max)");
 
-
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(max)");
 
-                   // b.Property<string>("Discriminator")
-                     //   .IsRequired()
-                      //  .HasColumnType("nvarchar(max)");
-
-                   // b.HasKey("UserId", "RoleId");
-
-
                     b.ToTable("IdentityUserRole<string>");
-
-
-                    b.ToTable("AspNetUserRoles", (string)null);
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUserRole<string>");
                 });
@@ -560,25 +448,6 @@ namespace LMS.DAL.Migrations
             modelBuilder.Entity("LMS.DAL.Entities.identityEntities.AppUserRole", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUserRole<string>");
-
-                    b.HasDiscriminator().HasValue("AppUserRole");
-                });
-
-            modelBuilder.Entity("LMS.DAL.Entities.identityEntities.AppUserRole", b =>
-                {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUserRole<string>");
-
-                    b.Property<string>("RoleId1")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("UserId1")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasIndex("RoleId1");
-
-                    b.HasIndex("UserId1");
 
                     b.HasDiscriminator().HasValue("AppUserRole");
                 });
@@ -680,30 +549,6 @@ namespace LMS.DAL.Migrations
                     b.Navigation("EnrolledStudents");
 
                     b.Navigation("StudentsCompleted");
-                });
-
-            modelBuilder.Entity("LMS.DAL.Entities.identityEntities.AppUserRole", b =>
-                {
-                    b.HasOne("LMS.DAL.Entities.identityEntities.AppRole", "Role")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("RoleId1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LMS.DAL.Entities.identityEntities.AppUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Role");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("LMS.DAL.Entities.identityEntities.AppRole", b =>
-                {
-                    b.Navigation("UserRoles");
                 });
 
             modelBuilder.Entity("LMS.DAL.Entities.Instructor", b =>

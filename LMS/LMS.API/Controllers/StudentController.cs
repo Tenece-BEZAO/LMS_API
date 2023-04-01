@@ -41,7 +41,7 @@ namespace LMS.API.Controllers
 
             [HttpPost]
             [Route("create-student")]
-            public async Task<IActionResult> CreateInstructor([FromBody] StudentDTO student)
+            public async Task<IActionResult> CreateStudent([FromBody] StudentDTO student)
             {
                 var result = await _studentService.CreateStudent(student);
                 if (result == null)
@@ -53,7 +53,7 @@ namespace LMS.API.Controllers
 
             [HttpDelete]
             [Route("delete-student")]
-            public async Task<IActionResult> DeleteInstructor(int id)
+            public async Task<IActionResult> DeleteStudent(int id)
             {
                 var result = await _studentService.DeleteStudent(id);
                 if (!result)
@@ -65,8 +65,8 @@ namespace LMS.API.Controllers
             }
 
             [HttpPut]
-            [Route("update-Instructor")]
-            public async Task<IActionResult> UpdateInstructor([FromBody] StudentDTO student)
+            [Route("update-Student")]
+            public async Task<IActionResult> UpdateStudent([FromBody] StudentDTO student)
             {
                StudentDTO studentDto = await _studentService.EditStudent(student);
                 if (studentDto == null)

@@ -1,6 +1,5 @@
 ﻿using LMS.BLL.DTOs.Request;
 using LMS.BLL.Interfaces;
-using LMS.DAL.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LMS.API.Controllers
@@ -22,18 +21,18 @@ namespace LMS.API.Controllers
         {
             var result = await _courseService.GetAllCourse();
             if (result == null)
-                return BadRequest();
+                return BadRequest("Uable to complete request");
 
             return Ok(result);
         }
 
         [HttpGet]
         [Route("get-course-by-id")]
-        public async Task<IActionResult> GetAllCourseById(int id)
+        public async Task<IActionResult> GetCourseById(int id)
         {
             var result = await _courseService.GetCourseById(id);
             if (result == null)
-                return BadRequest();
+                return BadRequest("Uable to complete request");
 
             return Ok(result);
         }
@@ -42,12 +41,16 @@ namespace LMS.API.Controllers
         [Route("create-course")]
         public async Task<IActionResult> CreateCourse([FromBody] CreateCourseDto course)
         {
-            var result = await _courseService.CreateCourse(course);
-            if (result == null)
-                return BadRequest();
+            if (ModelState.IsValid)
+            {
+                var result = await _courseService.CreateCourse(course);
+                if (result == null)
+                    return BadRequest("Uable to complete request");
 
 
-            return Ok(result);
+                return Ok(result);
+            }
+            return BadRequest("Unable to complete request");
         }
 
         [HttpDelete]
@@ -57,7 +60,7 @@ namespace LMS.API.Controllers
             var result = await _courseService.DeleteCourse(id);
             if (!result)
             {
-                return BadRequest();
+                return BadRequest("Uable to complete request");
             }
 
             return Ok("Course was deleted successfully");
@@ -67,12 +70,82 @@ namespace LMS.API.Controllers
         [Route("update-course")]
         public async Task<IActionResult> UpdateCourse([FromBody] EditCourseDto editCourse)
         {
-            Course course = await _courseService.EditCourse(editCourse);
-            if (course == null)
+            if (ModelState.IsValid)
             {
-                return BadRequest("something went wrong");
+                var course = await _courseService.EditCourse(editCourse);
+                if (course == null)
+                {
+                    return BadRequest("something went wrong");
+                }
+                return Ok(course);
             }
-            return Ok(course);
+            return BadRequest("Unable to complete request");
         }
+
+        [HttpPost]
+        [Route("student-enroll-for-course")]
+        public async Task<IActionResult> EnrollCourse([FromBody] CourseEnrollDto courseEnrollDto)
+        {
+           
+            if (ModelState.IsValid)
+            {
+                var result = await _courseService.EnrollForACourse(courseEnrollDto);
+                if (result == null)
+                    return BadRequest("unale to complete request");
+
+                return Ok("User have enrolled for the course");
+
+            }
+            return BadRequest(ModelState);
+        }
+/*
+        [HttpGet]
+        [Route("get-all-completed-course")]
+        public async Task<IActionResult> GetAllCompletedCourse()
+        {
+            var courses = await _courseService.GetAllCompletedCourses();
+            if (courses == null)
+                return BadRequest();
+
+            return Ok(courses);
+        }*/
+/*
+        [HttpGet]
+        [Route("all-enrolled-course")]
+        public async Task<IActionResult> GetUserEnrolledCourses(int studentId)
+        {
+            var result = await _courseService.GetUserEnrolledCourses(studentId);
+            if (result == null)
+                return BadRequest();
+
+            return Ok(result);
+        }*/
+
+
+        [HttpPut]
+        [Route("mark-course-as-complete")]
+        public async Task<IActionResult> MarkAsComplete(CourseEnrollDto markCourseAsCompleted)
+        {
+            var result = await _courseService.MarkAsComplete(markCourseAsCompleted);
+            if (result == false)
+                return BadRequest("was unable to mark as completed");
+
+            return Ok("Course marked as completed");
+
+        }
+
+
+       /* [HttpGet]
+        [Route("get-user-completed-courses")]
+        public async Task<IActionResult> GetUserCompletedCourses(int studentId)
+        {
+            var result = await _courseService.GetUserCompletedCourses(studentId);
+            if (result == null)
+                return BadRequest();
+
+            return Ok(result);
+        }*/
+
+
     }
 }

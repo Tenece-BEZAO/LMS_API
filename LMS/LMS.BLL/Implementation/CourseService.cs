@@ -2,9 +2,14 @@
 using LMS.BLL.DTOs.Response;
 using LMS.BLL.Exceptions;
 using LMS.BLL.Interfaces;
+using LMS.DAL;
 using LMS.DAL.Entities;
 using LMS.Repository;
+using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 using NotImplementedException = LMS.BLL.Exceptions.NotImplementedException;
+using AutoMapper;
 
 namespace LMS.BLL.Implementation
 {
@@ -16,11 +21,14 @@ namespace LMS.BLL.Implementation
         private readonly IRepository<Student> _studentRepo;
         private readonly IRepository<EnrolledStudentsCourses> _enrolledRepo;
         private readonly IRepository<CompletedStudentsCourses> _completedRepo;
+        private readonly LMSAppDbContext _dbContext;
+        private readonly IMapper _mapper;
 
-
-        public CourseService(IUnitOfWork unitOfWork)
+        public CourseService(IUnitOfWork unitOfWork, LMSAppDbContext dbContext, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _dbContext = dbContext;
+            _mapper = mapper;
             _courseRepo = _unitOfWork.GetRepository<Course>();
             _instructorRepo = _unitOfWork.GetRepository<Instructor>();
             _studentRepo = _unitOfWork.GetRepository<Student>();
@@ -129,7 +137,7 @@ namespace LMS.BLL.Implementation
             if (course == null)
                 throw new NotFoundException("Invalid course id");
 
-           var alreadyEnrolled = await _enrolledRepo.GetByAsync(c => c.CourseId == courseEnrollDto.CourseId && c.StudentId == courseEnrollDto.StudentId);
+            var alreadyEnrolled = await _enrolledRepo.GetByAsync(c => c.CourseId == courseEnrollDto.CourseId && c.StudentId == courseEnrollDto.StudentId);
             if (alreadyEnrolled.Count() > 0)
                 throw new BadRequestException("You have already enrolled for this course");
 
@@ -203,29 +211,42 @@ namespace LMS.BLL.Implementation
         }
 
 
-        public async Task<IEnumerable<Course>> GetUserEnrolledCourses(int studentId)
+        public async Task<IEnumerable<CourseDto>> GetUserEnrolledCourses(int studentId)
         {
-            var enrolledCourses = await _enrolledRepo.GetByAsync(c => c.StudentId == studentId);
 
-            IEnumerable<Course> courses;
-            foreach (var enrolledCourse in enrolledCourses)
-            {
-                courses = await _courseRepo.GetByAsync(c => c.Id == enrolledCourse.CourseId);
+          
+            
+            var result = await _studentRepo.GetSingleByAsync(s => s.Id == studentId, include: x => x.Include(x => x.EnrolledCourses).ThenInclude(x => x.Course));
 
-                if (courses.Count() > 0)
-                {
-                    return courses;
-                }
-            }
-            throw new NotFoundException("No course was found");
+            var response = result.EnrolledCourses.Select(x => x.Course).ToList();
+
+            var mappedValue = _mapper.Map<IEnumerable<CourseDto>>(response);
+            return mappedValue;
+            /* IEnumerable<Course> courses;
+             foreach (var enrolledCourse in enrolledCourses)
+             {
+                 courses = await _courseRepo.GetByAsync(c => c.Id == enrolledCourse.CourseId);
+
+                 if (courses.Count() > 0)
+                 {
+                     return courses;
+                 }
+             }
+             throw new NotFoundException("No course was found");*/
+            //hrow new System.NotImplementedException();
         }
 
         public async Task<bool> MarkAsComplete(CourseEnrollDto markCourseAsCompleted)
         {
             var enrolledCourse = await _enrolledRepo.GetByAsync(c => c.CourseId == markCourseAsCompleted.CourseId && c.StudentId == markCourseAsCompleted.StudentId);
-            if (enrolledCourse == null)
+            if (enrolledCourse.Count() == 0)
                 throw new NotFoundException("Course was not found");
             var student = await _studentRepo.GetByIdAsync(markCourseAsCompleted.StudentId);
+
+
+            var already = await _completedRepo.GetByAsync(c => c.CourseId == markCourseAsCompleted.CourseId && c.StudentId == markCourseAsCompleted.StudentId);
+            if (already.Count() != 0)
+                throw new NotImplementedException("This course have already been marked as complete");
 
             var completedCourse = new CompletedStudentsCourses()
             {

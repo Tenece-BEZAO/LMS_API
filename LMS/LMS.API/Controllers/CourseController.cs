@@ -86,6 +86,7 @@ namespace LMS.API.Controllers
         [Route("student-enroll-for-course")]
         public async Task<IActionResult> EnrollCourse([FromBody] CourseEnrollDto courseEnrollDto)
         {
+           
             if (ModelState.IsValid)
             {
                 var result = await _courseService.EnrollForACourse(courseEnrollDto);
@@ -97,7 +98,7 @@ namespace LMS.API.Controllers
             }
             return BadRequest(ModelState);
         }
-
+/*
         [HttpGet]
         [Route("get-all-completed-course")]
         public async Task<IActionResult> GetAllCompletedCourse()
@@ -107,8 +108,8 @@ namespace LMS.API.Controllers
                 return BadRequest();
 
             return Ok(courses);
-        }
-
+        }*/
+/*
         [HttpGet]
         [Route("all-enrolled-course")]
         public async Task<IActionResult> GetUserEnrolledCourses(int studentId)
@@ -118,7 +119,7 @@ namespace LMS.API.Controllers
                 return BadRequest();
 
             return Ok(result);
-        }
+        }*/
 
 
         [HttpPut]
@@ -134,7 +135,7 @@ namespace LMS.API.Controllers
         }
 
 
-        [HttpGet]
+       /* [HttpGet]
         [Route("get-user-completed-courses")]
         public async Task<IActionResult> GetUserCompletedCourses(int studentId)
         {
@@ -143,7 +144,7 @@ namespace LMS.API.Controllers
                 return BadRequest();
 
             return Ok(result);
-        }
+        }*/
 
 
     }

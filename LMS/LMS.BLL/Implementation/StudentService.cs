@@ -3,8 +3,16 @@ using LMS.BLL.DTOs.Request;
 using LMS.BLL.DTOs.Response;
 using LMS.BLL.Interfaces;
 using LMS.DAL.Entities;
-using LMS.DAL.Repository;
-
+using LMS.Repository;
+/*"userId": "65f686c7-5eb5-4fa4-bf89-526c6e8313ec",
+  "firstname": "uzumaki",
+  "lastName": "naruto",
+  "email": "naruto@domain.com",
+  "userName": "uzumaki.naruto",
+  "password": "Pas12345@",
+  "country": "nigeria",
+  "state": "enugu"
+*/
 namespace LMS.BLL.Implementation
 {
     public class StudentService : IStudentService
@@ -27,8 +35,7 @@ namespace LMS.BLL.Implementation
         {
             if (student.UserId == null || student.UserId == "")
             {
-                var CreatedUserIdResult = await _authService.CreateUser(new UserRegistrationRequest
-                    { Email = student.Email, UserName = student.UserName, Password = student.Password });
+                var CreatedUserIdResult = await _authService.CreateUser(new UserRegistrationRequest { Email = student.Email, UserName = student.UserName, Password = student.Password });
 
                 student.UserId = CreatedUserIdResult;
             }
@@ -37,22 +44,24 @@ namespace LMS.BLL.Implementation
             {
                 UserId = student.UserId,
                 FullName = student.Firstname + student.LastName,
-                Country = student.Country, State = student.State
+                Country = student.Country,
+                State = student.State
             };
 
 
-            var result = _studentRepo.AddAsync(newStudent);
-            if (result.IsCompletedSuccessfully)
-                return result.Result.Id.ToString();
+            var result = await _studentRepo.AddAsync(newStudent);
+            if (result != null)
+                return "Student with id:" + result.Id.ToString() + " have been created";
 
             throw new NotImplementedException("Student could not be created");
+
         }
 
         public async Task<bool> DeleteStudent(int id)
         {
             var result = _studentRepo.DeleteByIdAsync(id);
-            if (result.IsCompletedSuccessfully) return true;
-            return false;
+            if (result.IsCompletedSuccessfully) return true; return false;
+
         }
 
         public async Task<bool> EditStudent(StudentDTO student)
@@ -66,8 +75,10 @@ namespace LMS.BLL.Implementation
             };
             var result = _studentRepo.UpdateAsync(Updatestudent);
 
-            if (result.IsCompletedSuccessfully) return true;
-            return false;
+            if (result.IsCompletedSuccessfully) return true; return false;
+
+
+
         }
 
         public async Task<IEnumerable<StudentDTO>> GetAllStudents()

@@ -1,9 +1,10 @@
 ﻿using LMS.BLL.DTOs.Response;
+using LMS.BLL.Exceptions;
 using LMS.BLL.Interfaces;
 using LMS.DAL.Entities;
 using LMS.DAL.Entities.identityEntities;
+using LMS.Repository;
 using Microsoft.AspNetCore.Identity;
-using LMS.DAL.Repository;
 
 namespace LMS.BLL.Implementation
 {
@@ -21,29 +22,47 @@ namespace LMS.BLL.Implementation
             _repository = _unitOfWork.GetRepository<Instructor>();
         }
 
-        public Task<InstructorDTO> CreateInstructor(InstructorDTO instructor)
+        public async Task<InstructorDTO> CreateInstructor(InstructorDTO instructor)
         {
-            throw new NotImplementedException();
+            var user = await _userManager.FindByIdAsync(instructor.UserId);
+            if (user != null)
+            {
+                Instructor newInstructor = new Instructor()
+                {
+                    UserId = instructor.UserId,
+                    Fullname = instructor.FullName,
+                    CreatedBy = instructor.FullName
+                };
+
+                var createdInstructor = await _repository.AddAsync(newInstructor);
+                if (createdInstructor != null)
+                {
+                    return instructor;
+                }
+
+            }
+
+            throw new NotFoundException($"User with Id {instructor.UserId} was not found");
         }
 
         public Task<bool> DeleteInstructor(int id)
         {
-            throw new NotImplementedException();
+            throw new System.NotImplementedException();
         }
 
         public Task<InstructorDTO> EditInstructor(InstructorDTO instructor)
         {
-            throw new NotImplementedException();
+            throw new System.NotImplementedException();
         }
 
         public Task<IEnumerable<InstructorDTO>> GetAllInstructors()
         {
-            throw new NotImplementedException();
+            throw new System.NotImplementedException();
         }
 
         public Task<InstructorDTO> GetInstructorById(int instructorId)
         {
-            throw new NotImplementedException();
+            throw new System.NotImplementedException();
         }
     }
 }

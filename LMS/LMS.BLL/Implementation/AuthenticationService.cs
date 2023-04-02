@@ -55,7 +55,6 @@ namespace LMS.BLL.Implementation
                 Id = Guid.NewGuid().ToString(),
                 Email = request.Email.ToLower(),
                 UserName = request.UserName.Trim().ToLower(),
-                
                 PhoneNumber = request.MobileNumber,
                
             };

@@ -4,17 +4,18 @@ using LMS.BLL.DTOs.Response;
 using LMS.BLL.Interfaces;
 using LMS.DAL.Entities;
 using LMS.Repository;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+/*"userId": "65f686c7-5eb5-4fa4-bf89-526c6e8313ec",
+  "firstname": "uzumaki",
+  "lastName": "naruto",
+  "email": "naruto@domain.com",
+  "userName": "uzumaki.naruto",
+  "password": "Pas12345@",
+  "country": "nigeria",
+  "state": "enugu"
+*/
 namespace LMS.BLL.Implementation
 {
-    public class StudentService   : IStudentService
+    public class StudentService : IStudentService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _autoMapper;
@@ -22,7 +23,7 @@ namespace LMS.BLL.Implementation
         private readonly IRepository<Student> _studentRepo;
 
 
-        public StudentService(IUnitOfWork unitOfWork, IMapper autoMapper,  IAuthenticationService authService)
+        public StudentService(IUnitOfWork unitOfWork, IMapper autoMapper, IAuthenticationService authService)
         {
             _unitOfWork = unitOfWork;
             _autoMapper = autoMapper;
@@ -39,27 +40,28 @@ namespace LMS.BLL.Implementation
                 student.UserId = CreatedUserIdResult;
             }
 
-                Student newStudent = new Student { UserId = student.UserId, 
-                    FullName = student.Firstname + student.LastName,
-                    Country = student.Country, State = student.State };
+            Student newStudent = new Student
+            {
+                UserId = student.UserId,
+                FullName = student.Firstname + student.LastName,
+                Country = student.Country,
+                State = student.State
+            };
 
 
-              var result =  _studentRepo.AddAsync(newStudent);
-                if (result.IsCompletedSuccessfully)
-                    return  result.Result.Id.ToString();
+            var result = await _studentRepo.AddAsync(newStudent);
+            if (result != null)
+                return "Student with id:" + result.Id.ToString() + " have been created";
 
-                throw new NotImplementedException("Student could not be created");
-
-            return "Student could not be created";
-           
+            throw new NotImplementedException("Student could not be created");
 
         }
 
         public async Task<bool> DeleteStudent(int id)
         {
-           var result =  _studentRepo.DeleteByIdAsync(id);
+            var result = _studentRepo.DeleteByIdAsync(id);
             if (result.IsCompletedSuccessfully) return true; return false;
-           
+
         }
 
         public async Task<bool> EditStudent(StudentDTO student)
@@ -76,7 +78,7 @@ namespace LMS.BLL.Implementation
             if (result.IsCompletedSuccessfully) return true; return false;
 
 
-            
+
         }
 
         public async Task<IEnumerable<StudentDTO>> GetAllStudents()

@@ -33,8 +33,30 @@ public class AssessmentController : ControllerBase
         var assessments = await _assessmentService.GetAssessments();
 
         if (assessments is null)
-            return BadRequest();
+            return NotFound();
 
         return Ok(assessments);
+    }
+
+    [HttpGet("GetAssessment")]
+    public async Task<IActionResult> GetAssessment(int id)
+    {
+        var assessment = await _assessmentService.GetAssessment(id);
+
+        if (assessment is null)
+            return NotFound();
+
+        return Ok(assessment);
+    }
+
+    [HttpDelete("DeleteAssessment")]
+    public async Task<IActionResult> DeleteAssessment(int id)
+    {
+        var assessment = await _assessmentService.DeleteAssessment(id);
+
+        if (!assessment)
+            return NotFound();
+
+        return Ok(assessment);
     }
 }

@@ -78,4 +78,40 @@ public class AssessmentService : IAssessmentService
 
         return assessments;
     }
+
+    public async Task<Assessment> GetAssessment(int id)
+    {
+        var status = new Status();
+        var assessment = await _assessmentRepository.GetByIdAsync(id);
+
+        if (assessment is null)
+        {
+            status.StatusCode = 0;
+            status.Message = "Assessment not found";
+        }
+
+        return assessment;
+    }
+
+    // public async Task<Assessment> UpdateAssessment(int id, AssessmentRequestDto requestDto)
+    // {
+    //     var assessment = await _assessmentRepository.GetByIdAsync(id);
+    //     
+    // }
+
+    public async Task<bool> DeleteAssessment(int id)
+    {
+        var status = new Status();
+        var assessment = await _assessmentRepository.GetByIdAsync(id);
+
+        if (assessment is null)
+        {
+            status.StatusCode = 0;
+            status.Message = "Assessment not found";
+        }
+
+        await _assessmentRepository.DeleteAsync(assessment);
+
+        return true;
+    }
 }

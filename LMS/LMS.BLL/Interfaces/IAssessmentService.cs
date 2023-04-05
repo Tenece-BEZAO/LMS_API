@@ -8,4 +8,6 @@ public interface IAssessmentService
 {
     Task<Status> CreateAssessment(AssessmentRequestDto assessmentRequest);
     Task<IEnumerable<Assessment>> GetAssessments();
+    Task<Assessment> GetAssessment(int id);
+    Task<bool> DeleteAssessment(int id);
 }

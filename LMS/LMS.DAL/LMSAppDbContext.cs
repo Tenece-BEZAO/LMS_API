@@ -76,5 +76,7 @@ namespace LMS.DAL
 
         public DbSet<Assessment> Assessments { get; set; }
 
+        public DbSet<Payment> Payments { get; set; }
+
     }
 }

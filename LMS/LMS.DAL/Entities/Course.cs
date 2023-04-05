@@ -10,9 +10,6 @@ namespace LMS.DAL.Entities
 {
     public class Course : BaseEntity
     {
-
-
-        
         public string Title { get; set; }
 
         
@@ -33,6 +30,8 @@ namespace LMS.DAL.Entities
       //  public virtual Assessment Assessment { get; set; }
 
         public virtual ICollection<Assessment> Assessments { get; set; }
+
+      
 
         public virtual ICollection<EnrolledStudentsCourses> EnrolledStudents { get; set; }
 

@@ -13,6 +13,7 @@ namespace LMS.BLL.MappingProfiles
     {
         public CourseProfile() {
             CreateMap<Course, CourseDto>();
+            CreateMap<CourseDto, Course>();
         
         }
     }

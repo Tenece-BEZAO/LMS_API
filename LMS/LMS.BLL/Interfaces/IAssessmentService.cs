@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using LMS.BLL.DTOs.Request;
+using LMS.BLL.DTOs.Response;
 
-namespace LMS.BLL.Interfaces
+namespace LMS.BLL.Interfaces;
+
+public interface IAssessmentService
 {
-    internal interface IAssessmentService
-    {
-    }
+    Task<Status> CreateAssessment(AssessmentRequestDto assessmentRequest);
 }

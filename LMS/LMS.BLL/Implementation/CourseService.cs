@@ -4,12 +4,12 @@ using LMS.BLL.Exceptions;
 using LMS.BLL.Interfaces;
 using LMS.DAL;
 using LMS.DAL.Entities;
-using LMS.Repository;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using System.Text.Json;
 using NotImplementedException = LMS.BLL.Exceptions.NotImplementedException;
 using AutoMapper;
+using LMS.DAL.Repository;
 
 namespace LMS.BLL.Implementation
 {
@@ -34,8 +34,8 @@ namespace LMS.BLL.Implementation
             _studentRepo = _unitOfWork.GetRepository<Student>();
             _enrolledRepo = _unitOfWork.GetRepository<EnrolledStudentsCourses>();
             _completedRepo = _unitOfWork.GetRepository<CompletedStudentsCourses>();
-
         }
+
         public async Task<CourseDto> CreateCourse(CreateCourseDto course)
         {
             var Instructor = await _instructorRepo.GetByIdAsync(course.InstructorId);
@@ -54,7 +54,6 @@ namespace LMS.BLL.Implementation
                 CourseType = course.CourseType,
                 InstructorId = course.InstructorId,
                 IsActive = false,
-
             };
             var createdCourse = await _courseRepo.AddAsync(newCourse);
             if (createdCourse == null)
@@ -62,7 +61,6 @@ namespace LMS.BLL.Implementation
 
             return new CourseDto()
             {
-
                 Title = createdCourse.Title,
                 Detail = createdCourse.Detail,
                 HeaderImageUrl = createdCourse.HeaderImageUrl,
@@ -106,14 +104,12 @@ namespace LMS.BLL.Implementation
             foundCourse.IsActive = editCourse.IsActive;
 
 
-
             Course updatedCourse = await _courseRepo.UpdateAsync(foundCourse);
             if (updatedCourse == null)
                 throw new NotImplementedException("Unable to update course");
 
             return new CourseDto()
             {
-
                 Title = updatedCourse.Title,
                 Detail = updatedCourse.Detail,
                 HeaderImageUrl = updatedCourse.HeaderImageUrl,
@@ -125,7 +121,6 @@ namespace LMS.BLL.Implementation
                 InstructorId = updatedCourse.InstructorId,
                 IsActive = updatedCourse.IsActive
             };
-
         }
 
         public async Task<EnrolledStudentsCourses> EnrollForACourse(CourseEnrollDto courseEnrollDto)
@@ -137,7 +132,8 @@ namespace LMS.BLL.Implementation
             if (course == null)
                 throw new NotFoundException("Invalid course id");
 
-            var alreadyEnrolled = await _enrolledRepo.GetByAsync(c => c.CourseId == courseEnrollDto.CourseId && c.StudentId == courseEnrollDto.StudentId);
+            var alreadyEnrolled = await _enrolledRepo.GetByAsync(c =>
+                c.CourseId == courseEnrollDto.CourseId && c.StudentId == courseEnrollDto.StudentId);
             if (alreadyEnrolled.Count() > 0)
                 throw new BadRequestException("You have already enrolled for this course");
 
@@ -172,6 +168,7 @@ namespace LMS.BLL.Implementation
                     return courses;
                 }
             }
+
             throw new NotFoundException("No course was found");
         }
 
@@ -213,10 +210,8 @@ namespace LMS.BLL.Implementation
 
         public async Task<IEnumerable<CourseDto>> GetUserEnrolledCourses(int studentId)
         {
-
-          
-            
-            var result = await _studentRepo.GetSingleByAsync(s => s.Id == studentId, include: x => x.Include(x => x.EnrolledCourses).ThenInclude(x => x.Course));
+            var result = await _studentRepo.GetSingleByAsync(s => s.Id == studentId,
+                include: x => x.Include(x => x.EnrolledCourses).ThenInclude(x => x.Course));
 
             var response = result.EnrolledCourses.Select(x => x.Course).ToList();
 
@@ -238,13 +233,15 @@ namespace LMS.BLL.Implementation
 
         public async Task<bool> MarkAsComplete(CourseEnrollDto markCourseAsCompleted)
         {
-            var enrolledCourse = await _enrolledRepo.GetByAsync(c => c.CourseId == markCourseAsCompleted.CourseId && c.StudentId == markCourseAsCompleted.StudentId);
+            var enrolledCourse = await _enrolledRepo.GetByAsync(c =>
+                c.CourseId == markCourseAsCompleted.CourseId && c.StudentId == markCourseAsCompleted.StudentId);
             if (enrolledCourse.Count() == 0)
                 throw new NotFoundException("Course was not found");
             var student = await _studentRepo.GetByIdAsync(markCourseAsCompleted.StudentId);
 
 
-            var already = await _completedRepo.GetByAsync(c => c.CourseId == markCourseAsCompleted.CourseId && c.StudentId == markCourseAsCompleted.StudentId);
+            var already = await _completedRepo.GetByAsync(c =>
+                c.CourseId == markCourseAsCompleted.CourseId && c.StudentId == markCourseAsCompleted.StudentId);
             if (already.Count() != 0)
                 throw new NotImplementedException("This course have already been marked as complete");
 
@@ -264,4 +261,3 @@ namespace LMS.BLL.Implementation
         }
     }
 }
-

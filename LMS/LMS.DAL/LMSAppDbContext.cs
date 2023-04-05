@@ -38,7 +38,6 @@ namespace LMS.DAL
                 .HasForeignKey(fk => fk.CourseId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-
             builder.Entity<EnrolledStudentsCourses>()
                 .HasOne(s => s.Student)
                 .WithMany(a => a.EnrolledCourses)

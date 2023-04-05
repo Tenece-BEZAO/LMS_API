@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LMS.DAL.Migrations
 {
     [DbContext(typeof(LMSAppDbContext))]
-    [Migration("20230331213143_AddedEnities")]
-    partial class AddedEnities
+    [Migration("20230403100958_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

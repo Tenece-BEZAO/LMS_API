@@ -23,6 +23,7 @@ namespace LMS.BLL.Extensions
             services.AddTransient<IInstructorService, InstructorService>();
             services.AddTransient<ICourseService, CourseService>();
             services.AddTransient<IStudentService, StudentService>();
+            services.AddTransient<IPaymentService, PaymentService>();
             //services.AddTransient<IEmailService, EmailService>();
             services.AddTransient<Interfaces.IAuthenticationService, Implementation.AuthenticationService>();
             services.AddTransient<IRoleService, RoleService>();

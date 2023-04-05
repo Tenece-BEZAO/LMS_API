@@ -6,7 +6,6 @@ using LMS.BLL.Interfaces;
 using LMS.DAL;
 using LMS.DAL.Entities;
 using LMS.Repository;
-using Microsoft.AspNetCore.Server.IIS.Core;
 using Microsoft.EntityFrameworkCore;
 using NotImplementedException = LMS.BLL.Exceptions.NotImplementedException;
 
@@ -74,7 +73,6 @@ namespace LMS.BLL.Implementation
                 IsActive = false,
             };
         }
-
         public async Task<bool> DeleteCourse(int id)
         {
             var course = await _courseRepo.GetByIdAsync(id);
@@ -83,7 +81,6 @@ namespace LMS.BLL.Implementation
             await _courseRepo.DeleteAsync(course);
             return true;
         }
-
         public async Task<CourseDto> EditCourse(EditCourseDto editCourse)
         {
             var Instructor = await _instructorRepo.GetByIdAsync(editCourse.InstructorId);
@@ -126,7 +123,6 @@ namespace LMS.BLL.Implementation
             };
 
         }
-
         public async Task<EnrolledStudentsCourses> EnrollForACourse(CourseEnrollDto courseEnrollDto)
         {
             var student = await _studentRepo.GetByIdAsync(courseEnrollDto.StudentId);
@@ -156,7 +152,6 @@ namespace LMS.BLL.Implementation
 
             throw new NotImplementedException("Was not able to enroll for this course");
         }
-
         public async Task<IEnumerable<Course>> GetAllCompletedCourses()
         {
             var isCompleted = await _completedRepo.GetAllAsync();
@@ -173,7 +168,6 @@ namespace LMS.BLL.Implementation
             }
             throw new NotFoundException("No course was found");
         }
-
         public async Task<IEnumerable<Course>> GetAllCourse()
         {
             var courses = await _courseRepo.GetAllAsync();
@@ -182,7 +176,6 @@ namespace LMS.BLL.Implementation
 
             return courses;
         }
-
         public async Task<CourseDto> GetCourseById(int courseId)
         {
             var course = await _courseRepo.GetByIdAsync(courseId);
@@ -203,7 +196,6 @@ namespace LMS.BLL.Implementation
                 IsActive = course.IsActive
             };
         }
-
         public async Task<IEnumerable<Course>> GetUserCompletedCourses(int studentId)
         {
             var result = await _studentRepo.GetSingleByAsync(s => s.Id == studentId, include: x => x.Include(x => x.CompletedCourses).ThenInclude(x => x.Course));
@@ -228,13 +220,11 @@ namespace LMS.BLL.Implementation
             });
 
         }
-
-
         public async Task<IEnumerable<Course>> GetUserEnrolledCourses(int studentId)
         {
 
             var result = await _studentRepo.GetSingleByAsync(s => s.Id == studentId, include: x => x.Include(x => x.EnrolledCourses).ThenInclude(x => x.Course));
-        
+
             if (result == null)
                 throw new NotFoundException("Invalid Student Id");
 
@@ -256,7 +246,6 @@ namespace LMS.BLL.Implementation
 
 
         }
-
         public async Task<bool> MarkAsComplete(CourseEnrollDto markCourseAsCompleted)
         {
             var enrolledCourse = await _enrolledRepo.GetByAsync(c => c.CourseId == markCourseAsCompleted.CourseId && c.StudentId == markCourseAsCompleted.StudentId);
@@ -283,6 +272,7 @@ namespace LMS.BLL.Implementation
 
             return true;
         }
+
     }
 }
 

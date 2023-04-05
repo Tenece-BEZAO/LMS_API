@@ -9,10 +9,12 @@ namespace LMS.API.Controllers
     public class CourseController : ControllerBase
     {
         private readonly ICourseService _courseService;
+        private readonly IPaymentService _paymentService;
 
-        public CourseController(ICourseService courseService)
+        public CourseController(ICourseService courseService, IPaymentService paymentService)
         {
             _courseService = courseService;
+            _paymentService = paymentService;
         }
 
         [HttpGet]
@@ -133,6 +135,7 @@ namespace LMS.API.Controllers
             return Ok("Course marked as completed");
 
         }
+
 
 
        /* [HttpGet]

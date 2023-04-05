@@ -17,11 +17,11 @@ namespace LMS.BLL.Interfaces
         Task<IEnumerable<Course>> GetAllCourse();
         Task<bool> DeleteCourse(int id);
         Task<EnrolledStudentsCourses> EnrollForACourse(CourseEnrollDto courseEnrollDto);
-        Task<IEnumerable<Course>> GetUserEnrolledCourses(int studentId);
-
-        Task<IEnumerable<Course>> GetUserCompletedCourses(int studentId);
+        Task<IEnumerable<Course>> GetUserCompletedCourses(int userId);
         Task<IEnumerable<Course>> GetAllCompletedCourses();
         Task<bool> MarkAsComplete(CourseEnrollDto markCourseAsCompleted);
+       Task<IEnumerable<Course>> GetUserEnrolledCourses(int studentId);
+
 
 
     }

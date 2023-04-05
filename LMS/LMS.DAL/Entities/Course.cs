@@ -31,7 +31,8 @@ namespace LMS.DAL.Entities
 
         public virtual ICollection<Assessment> Assessments { get; set; }
 
-      
+
+        public ICollection<CoursePayment> Payments { get; set; }
 
         public virtual ICollection<EnrolledStudentsCourses> EnrolledStudents { get; set; }
 

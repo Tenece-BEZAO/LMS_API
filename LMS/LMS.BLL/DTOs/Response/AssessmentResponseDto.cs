@@ -1,6 +1,8 @@
-﻿namespace LMS.DAL.Entities;
+using LMS.DAL.Entities;
 
-public class Assessment : BaseEntity
+namespace LMS.BLL.DTOs.Response;
+
+public class AssessmentResponseDto
 {
     public string Title { get; set; }
     public string AssessmentType { get; set; }
@@ -9,8 +11,4 @@ public class Assessment : BaseEntity
     public Student Student { get; set; }
     public int InstructorId { get; set; }
     public int CourseId { get; set; }
-    public Course CourseFor { get; set; }
-
-    //public virtual ICollection<Course> CourseList { get; set; }
-    //public virtual ICollection<Student> StudentList { get; set; }
 }

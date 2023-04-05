@@ -12,7 +12,6 @@ namespace LMS.BLL.Extensions
     {
         public static void RegisterServices(this IServiceCollection services)
         {
-
             services.AddScoped<IUnitOfWork, UnitOfWork<LMSAppDbContext>>();
             services.AddScoped<ICourseService, CourseService>();
             services.AddTransient<IJWTAuthenticator, JwtAuthenticator>();
@@ -27,7 +26,7 @@ namespace LMS.BLL.Extensions
             services.AddTransient<Interfaces.IAuthenticationService, Implementation.AuthenticationService>();
             services.AddTransient<IRoleService, RoleService>();
 
-
+            services.AddScoped<IAssessmentService, AssessmentService>();
         }
     }
 }

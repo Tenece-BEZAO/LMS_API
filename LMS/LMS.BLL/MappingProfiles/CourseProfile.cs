@@ -13,6 +13,8 @@ public class CourseProfile : Profile
 {
     public CourseProfile()
     {
+
         CreateMap<Course, CourseDto>();
+
     }
 }

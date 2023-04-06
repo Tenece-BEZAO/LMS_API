@@ -55,10 +55,20 @@ namespace LMS.DAL
                 .HasForeignKey(fk => fk.CourseId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<Course>().Property(c => c.Price).HasConversion(typeof(double));
+
+            builder.Entity<CoursePayment>().HasOne(c => c.Course).WithMany(p => p.Payments).HasForeignKey(fk => fk.CourseId).OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<CoursePayment>().HasOne(s => s.Student).WithMany(p => p.Payments).HasForeignKey(fk => fk.StudentId).OnDelete(DeleteBehavior.Restrict);
+
+
+            builder.Entity<Course>().Property(c=>c.Price).HasConversion(typeof(double));
 
 
             builder.Entity<Assessment>().Property(c => c.Score).HasConversion(typeof(decimal));
+
+            
+
+
+
         }
 
 
@@ -69,5 +79,9 @@ namespace LMS.DAL
         public DbSet<Instructor> Instructors { get; set; }
 
         public DbSet<Assessment> Assessments { get; set; }
+
+       
+        public DbSet<CoursePayment> CoursePayments { get; set; }
+
     }
 }

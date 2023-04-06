@@ -98,7 +98,7 @@ namespace LMS.API.Controllers
                 return Ok("User have enrolled for the course");
 
             }
-            return BadRequest(ModelState);
+            return BadRequest("Something Went wrong");
         }
 
         [HttpGet]

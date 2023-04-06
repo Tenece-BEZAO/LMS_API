@@ -1,5 +1,4 @@
-﻿using LMS.BLL.Exceptions;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using System.Net;
 using System.Text.Json;
 
@@ -14,6 +13,7 @@ namespace LMS.DAL.Configurations
         {
             _next = next;
         }
+
         public async Task Invoke(HttpContext context)
         {
             try
@@ -69,11 +69,11 @@ namespace LMS.DAL.Configurations
                 status = HttpStatusCode.InternalServerError;
                 stackTrace = ex.StackTrace;
             }
+
             var exceptionResult = JsonSerializer.Serialize(new { error = message, stackTrace });
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)status;
             return context.Response.WriteAsync(exceptionResult);
         }
-
     }
 }

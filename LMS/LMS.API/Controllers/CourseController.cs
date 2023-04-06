@@ -9,10 +9,12 @@ namespace LMS.API.Controllers
     public class CourseController : ControllerBase
     {
         private readonly ICourseService _courseService;
+        private readonly IPaymentService _paymentService;
 
-        public CourseController(ICourseService courseService)
+        public CourseController(ICourseService courseService, IPaymentService paymentService)
         {
             _courseService = courseService;
+            _paymentService = paymentService;
         }
 
         [HttpGet]
@@ -96,22 +98,22 @@ namespace LMS.API.Controllers
                 return Ok("User have enrolled for the course");
 
             }
-            return BadRequest(ModelState);
+            return BadRequest("Something Went wrong");
         }
-/*
+
         [HttpGet]
-        [Route("get-all-completed-course")]
-        public async Task<IActionResult> GetAllCompletedCourse()
+        [Route("student-completed-courses")]
+        public async Task<IActionResult> GetUserCompletedCourses(int studentId)
         {
-            var courses = await _courseService.GetAllCompletedCourses();
+            var courses = await _courseService.GetUserCompletedCourses(studentId);
             if (courses == null)
                 return BadRequest();
 
             return Ok(courses);
-        }*/
-/*
+        }
+
         [HttpGet]
-        [Route("all-enrolled-course")]
+        [Route("student-enrolled-courses")]
         public async Task<IActionResult> GetUserEnrolledCourses(int studentId)
         {
             var result = await _courseService.GetUserEnrolledCourses(studentId);
@@ -119,7 +121,7 @@ namespace LMS.API.Controllers
                 return BadRequest();
 
             return Ok(result);
-        }*/
+        }
 
 
         [HttpPut]
@@ -133,6 +135,7 @@ namespace LMS.API.Controllers
             return Ok("Course marked as completed");
 
         }
+
 
 
        /* [HttpGet]

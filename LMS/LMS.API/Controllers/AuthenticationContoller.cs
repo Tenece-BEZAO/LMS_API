@@ -35,6 +35,18 @@ namespace LMS.API.Controllers
             return Ok(response);
         }
 
+        [AllowAnonymous]
+        [HttpGet("GetUsers", Name = "Get-All-Users")]
+        [SwaggerOperation(Summary = "Gets All Users")]
+        [SwaggerResponse(StatusCodes.Status200OK, Description = "List of all Identity User", Type = typeof(AuthenticationResponse))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Description = "User with provided email already exists", Type = typeof(ErrorResponse))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Description = "Failed to create user", Type = typeof(ErrorResponse))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, Description = "It's not you, it's us", Type = typeof(ErrorResponse))]
+        public async Task<IActionResult> GetAllUsers(UserRegistrationRequest request)
+        {
+            string response = await _authService.CreateUser(request);
+            return Ok(response);
+        }
 
         [AllowAnonymous]
         [HttpPost("login", Name = "Login")]

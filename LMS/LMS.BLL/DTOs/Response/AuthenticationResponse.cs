@@ -8,15 +8,13 @@ namespace LMS.BLL.DTOs.Response
 {
     public class AuthenticationResponse
     {
-        public JwtToken JwtToken { get; set; }
-        public string UserType { get; set; }
-        public string FullName { get; set; }
-        public IEnumerable<string> MenuItems { get; set; }
-        public bool? Birthday { get; set; }
-        public bool TwoFactor { get; set; }
+       // public JwtToken JwtToken { get; set; }
+        public string JwtToken { get; set; }
         public string UserId { get; set; }
-        public string ImpersonatorUsername { get; set; }
-        public bool IsImpersonating { get; set; }
+        public string RefreshToken { get; set; }
+        public bool Result { get; set; }
+        public string FullName { get; set; }
+   
     }
 
     public class JwtToken

@@ -4,6 +4,7 @@ using InventoryMg.BLL.DTOs.Request;
 using LMS.BLL.DTOs.Request;
 using LMS.BLL.DTOs.Response;
 using LMS.BLL.Exceptions;
+using LMS.BLL.Infrastructures.jwt;
 using LMS.BLL.Interfaces;
 using LMS.DAL.Entities.identityEntities;
 using LMS.Repository;
@@ -97,7 +98,15 @@ namespace LMS.BLL.Implementation
             return user.Id;
         }
 
-      
+
+        public async Task<IEnumerable<AppUser>> GetAllUsers()
+        {
+
+            var AllUsers = _userManager.Users.ToList();
+
+
+            return AllUsers;
+        }
 
         public async Task<AuthenticationResponse> UserLogin(LoginRequest request)
         {
@@ -139,13 +148,19 @@ namespace LMS.BLL.Implementation
 
             var claims = await GetAllValidClaims(user);
 
+            SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor();
+
+            tokenDescriptor.Subject = new ClaimsIdentity(claims); 
+            tokenDescriptor.Expires = DateTime.UtcNow.Add(TimeSpan.Parse(_configuration.GetSection("JwtConfig:Expires").Value));
+            tokenDescriptor.SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256);
+            
             //Token descriptor
-            var tokenDescriptor = new SecurityTokenDescriptor()
-            {
-                Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.Add(TimeSpan.Parse(_configuration.GetSection("JwtConfig:ExpiryTimeFrame").Value)),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
-            };
+            //var tokenDescriptor = new SecurityTokenDescriptor()
+            //{
+            //    Subject = new ClaimsIdentity(claims),
+            //    Expires = DateTime.UtcNow.Add(TimeSpan.Parse(_configuration.GetSection("JwtConfig:ExpiryTimeFrame").Value)),
+            //    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
+            //};
 
             var token = JwtTokenHandler.CreateToken(tokenDescriptor);
             var jwtToken = JwtTokenHandler.WriteToken(token);

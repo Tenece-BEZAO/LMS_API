@@ -17,8 +17,9 @@ namespace LMS.DAL.Entities
         public string Country { get; set; }
         public string State { get; set; }
 
+        //  git push origin -u Ebube4imNewSstuff 
 
-      //  public virtual Assessment Assessment { get; set; }
+        //  public virtual Assessment Assessment { get; set; }
         public virtual ICollection<Assessment> Assessments { get; set; }
 
         public virtual ICollection<EnrolledStudentsCourses> EnrolledCourses { get; set; }

@@ -11,17 +11,15 @@ using System.Threading.Tasks;
 
 namespace LMS.DAL
 {
-    public class LMSAppDbContext : IdentityDbContext<AppUser, AppRole, string, AppUserClaim, AppUserRole, IdentityUserLogin<string>, AppRoleClaim, IdentityUserToken<string>>
+    public class LMSAppDbContext : IdentityDbContext<AppUser, AppRole, string, AppUserClaim, AppUserRole,
+        IdentityUserLogin<string>, AppRoleClaim, IdentityUserToken<string>>
     {
-
-        public LMSAppDbContext(DbContextOptions options): base(options)
+        public LMSAppDbContext(DbContextOptions options) : base(options)
         {
-
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-
             builder.Entity<IdentityUserLogin<string>>().HasNoKey();
             builder.Entity<IdentityUserRole<string>>().HasNoKey();
             builder.Entity<IdentityUserToken<string>>().HasNoKey();
@@ -57,6 +55,7 @@ namespace LMS.DAL
                 .HasForeignKey(fk => fk.CourseId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+
             builder.Entity<CoursePayment>().HasOne(c => c.Course).WithMany(p => p.Payments).HasForeignKey(fk => fk.CourseId).OnDelete(DeleteBehavior.Restrict);
             builder.Entity<CoursePayment>().HasOne(s => s.Student).WithMany(p => p.Payments).HasForeignKey(fk => fk.StudentId).OnDelete(DeleteBehavior.Restrict);
 
@@ -69,18 +68,18 @@ namespace LMS.DAL
             
 
 
+
         }
 
 
-
-
-        public DbSet<Course>   Courses { get; set; }
+        public DbSet<Course> Courses { get; set; }
 
         public DbSet<Student> Students { get; set; }
 
         public DbSet<Instructor> Instructors { get; set; }
 
         public DbSet<Assessment> Assessments { get; set; }
+
        
         public DbSet<CoursePayment> CoursePayments { get; set; }
 

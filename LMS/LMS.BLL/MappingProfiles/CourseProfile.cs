@@ -7,14 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LMS.BLL.MappingProfiles
+namespace LMS.BLL.MappingProfiles;
+
+public class CourseProfile : Profile
 {
-    public class CourseProfile : Profile
+    public CourseProfile()
     {
-        public CourseProfile() {
-            CreateMap<Course, CourseDto>();
-            CreateMap<CourseDto, Course>();
-        
-        }
+
+        CreateMap<Course, CourseDto>();
+
     }
 }

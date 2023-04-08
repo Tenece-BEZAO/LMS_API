@@ -10,4 +10,5 @@ public interface IAssessmentService
     Task<IEnumerable<Assessment>> GetAssessments();
     Task<Assessment> GetAssessment(int id);
     Task<bool> DeleteAssessment(int id);
+    Task<Status> UpdateAssessment(EditAssessmentDto requestDto);
 }

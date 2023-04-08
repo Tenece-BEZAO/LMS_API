@@ -1,5 +1,4 @@
 using LMS.BLL.DTOs.Request;
-using LMS.BLL.DTOs.Response;
 using LMS.BLL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -47,6 +46,17 @@ public class AssessmentController : ControllerBase
             return NotFound();
 
         return Ok(assessment);
+    }
+
+    [HttpPut("UpdateAssessment")]
+    public async Task<IActionResult> UpdateAssessment(EditAssessmentDto requestDto)
+    {
+        var updatedAssessment = await _assessmentService.UpdateAssessment(requestDto);
+
+        if (updatedAssessment is null)
+            return BadRequest();
+
+        return Ok(updatedAssessment);
     }
 
     [HttpDelete("DeleteAssessment")]

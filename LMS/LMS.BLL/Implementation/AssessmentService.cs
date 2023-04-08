@@ -93,11 +93,49 @@ public class AssessmentService : IAssessmentService
         return assessment;
     }
 
-    // public async Task<Assessment> UpdateAssessment(int id, AssessmentRequestDto requestDto)
-    // {
-    //     var assessment = await _assessmentRepository.GetByIdAsync(id);
-    //     
-    // }
+    public async Task<Status> UpdateAssessment(EditAssessmentDto requestDto)
+    {
+        var status = new Status();
+        var course = await _courseRepository.GetByIdAsync(requestDto.CourseId);
+
+        if (course is null)
+        {
+            status.StatusCode = 0;
+            status.Message = "Course not found.";
+
+            return status;
+        }
+
+        var assessment = await _assessmentRepository.GetByIdAsync(requestDto.EditAssessmentId);
+
+        if (assessment is null)
+        {
+            status.StatusCode = 0;
+            status.Message = "Assessment not found";
+        }
+
+        assessment.Title = requestDto.Title;
+        assessment.AssessmentType = requestDto.AssessmentType;
+        assessment.Score = requestDto.Score;
+        assessment.StudentId = requestDto.StudentId;
+        assessment.InstructorId = requestDto.InstructorId;
+        assessment.CourseId = requestDto.CourseId;
+
+        var updatedAssessment = await _assessmentRepository.UpdateAsync(assessment);
+
+        if (updatedAssessment is null)
+        {
+            status.StatusCode = 0;
+            status.Message = "Was unable to update assessment";
+
+            return status;
+        }
+
+        status.StatusCode = 1;
+        status.Message = "Assessment update was successful";
+
+        return status;
+    }
 
     public async Task<bool> DeleteAssessment(int id)
     {

@@ -155,20 +155,21 @@ public class AssessmentService : IAssessmentService
         return true;
     }
 
-    public async Task<Assessment?> GetEnrolledAssessmentforAStudent(string studentId)
+    public async Task<IEnumerable<Assessment>> GetEnrolledAssessmentForAStudent(string studentId)
     {
         var status = new Status();
 
         int studentIdInt = int.Parse(studentId);
-        var enrolledAssessment = await _assessmentRepository.GetByIdAsync(studentIdInt);
+        var allAssessments = await _assessmentRepository.GetAllAsync();
+        var enrolledAssessments = allAssessments.Where(x => x.StudentId == studentIdInt);
 
-        if (enrolledAssessment is null)
+        if (enrolledAssessments is null || !enrolledAssessments.Any())
         {
             status.StatusCode = 0;
-            status.Message = "Enrolled Assessment not found";
+            status.Message = "Enrolled Assessments not found";
         }
 
-        return enrolledAssessment;
+        return enrolledAssessments;
     }
 
     public async Task<IEnumerable<Assessment>> GetAllCompletedAssessment()

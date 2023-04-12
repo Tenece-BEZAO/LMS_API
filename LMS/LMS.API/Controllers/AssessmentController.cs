@@ -80,7 +80,7 @@ public class AssessmentController : ControllerBase
     [HttpGet("GetEnrolledAssessmentforAStudent")]
     public async Task<IActionResult> GetEnrolledAssessmentforAStudent(string studentId)
     {
-        var enrolledAssessments = await _assessmentService.GetEnrolledAssessmentforAStudent(studentId);
+        var enrolledAssessments = await _assessmentService.GetEnrolledAssessmentForAStudent(studentId);
 
         if (enrolledAssessments is null)
             return NotFound();

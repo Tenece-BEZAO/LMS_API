@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LMS.DAL.Migrations
 {
     [DbContext(typeof(LMSAppDbContext))]
-    [Migration("20230405100919_Initial")]
-    partial class Initial
+    [Migration("20230408112235_updated completed assessments")]
+    partial class updatedcompletedassessments
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -45,6 +45,9 @@ namespace LMS.DAL.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("InstructorId")
+                        .HasColumnType("int");
+
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
@@ -68,6 +71,32 @@ namespace LMS.DAL.Migrations
                     b.HasIndex("StudentId");
 
                     b.ToTable("Assessments");
+                });
+
+            modelBuilder.Entity("LMS.DAL.Entities.CompletedStudentsAssessment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("AssessmentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AssessmentId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("CompletedStudentsAssessments");
                 });
 
             modelBuilder.Entity("LMS.DAL.Entities.CompletedStudentsCourses", b =>
@@ -469,6 +498,25 @@ namespace LMS.DAL.Migrations
                         .IsRequired();
 
                     b.Navigation("CourseFor");
+
+                    b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("LMS.DAL.Entities.CompletedStudentsAssessment", b =>
+                {
+                    b.HasOne("LMS.DAL.Entities.Assessment", "Assessment")
+                        .WithMany()
+                        .HasForeignKey("AssessmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LMS.DAL.Entities.Student", "Student")
+                        .WithMany()
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Assessment");
 
                     b.Navigation("Student");
                 });

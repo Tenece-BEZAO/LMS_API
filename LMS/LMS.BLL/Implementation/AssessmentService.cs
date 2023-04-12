@@ -15,6 +15,7 @@ public class AssessmentService : IAssessmentService
     private readonly IUnitOfWork _unitOfWork;
     private readonly UserManager<AppUser> _userManager;
     private readonly IRepository<Assessment> _assessmentRepository;
+    private readonly IRepository<CompletedStudentsAssessment> _completedAssessment;
     private readonly IRepository<Course> _courseRepository;
 
     public AssessmentService(IMapper mapper, IUnitOfWork unitOfWork, UserManager<AppUser> userManager)
@@ -23,6 +24,7 @@ public class AssessmentService : IAssessmentService
         _unitOfWork = unitOfWork;
         _userManager = userManager;
         _assessmentRepository = _unitOfWork.GetRepository<Assessment>();
+        _completedAssessment = _unitOfWork.GetRepository<CompletedStudentsAssessment>();
         _courseRepository = _unitOfWork.GetRepository<Course>();
     }
 
@@ -151,5 +153,35 @@ public class AssessmentService : IAssessmentService
         await _assessmentRepository.DeleteAsync(assessment);
 
         return true;
+    }
+
+    public async Task<Assessment?> GetEnrolledAssessmentforAStudent(string studentId)
+    {
+        var status = new Status();
+
+        int studentIdInt = int.Parse(studentId);
+        var enrolledAssessment = await _assessmentRepository.GetByIdAsync(studentIdInt);
+
+        if (enrolledAssessment is null)
+        {
+            status.StatusCode = 0;
+            status.Message = "Enrolled Assessment not found";
+        }
+
+        return enrolledAssessment;
+    }
+
+    public async Task<IEnumerable<Assessment>> GetAllCompletedAssessment()
+    {
+        var status = new Status();
+        var completedAssessments = await _completedAssessment.GetAllAsync();
+
+        if (completedAssessments is null)
+        {
+            status.StatusCode = 0;
+            status.Message = "Completed Assessments not found";
+        }
+
+        return _mapper.Map<IEnumerable<Assessment>>(completedAssessments);
     }
 }

@@ -64,7 +64,8 @@ namespace LMS.BLL.Infrastructure.jwt
             {
                 Token = jwtToken,
                 Issued = DateTime.Now,
-                Expires = tokenDescriptor.Expires
+                Expires = tokenDescriptor.Expires 
+
             };
 
         }

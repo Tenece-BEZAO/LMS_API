@@ -1,5 +1,6 @@
 ﻿using LMS.BLL.DTOs.Request;
 using LMS.BLL.DTOs.Response;
+using LMS.DAL.Entities.identityEntities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace LMS.BLL.Interfaces
 
         Task<string> ChangePassword(string userId, ChangePasswordRequest request);
         Task<string> ResetPassword(ResetPasswordRequest request);
+        Task<IEnumerable<AppUser>> GetAllUsers ();
 
         //Task<string> CreateUser(UserRegistrationRequest request);
         //Task<AuthenticationResponse> UserLogin(LoginRequest request);

@@ -6,8 +6,6 @@ using LMS.DAL;
 using LMS.DAL.Entities;
 using LMS.Repository;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json.Serialization;
-using System.Text.Json;
 using NotImplementedException = LMS.BLL.Exceptions.NotImplementedException;
 using AutoMapper;
 
@@ -206,7 +204,6 @@ public class CourseService : ICourseService
     {
         throw new System.NotImplementedException();
     }
-
 
     public async Task<IEnumerable<CourseDto>> GetUserEnrolledCourses(int studentId)
     {

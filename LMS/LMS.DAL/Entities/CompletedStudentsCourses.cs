@@ -1,22 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace LMS.DAL.Entities;
 
-namespace LMS.DAL.Entities
+public class CompletedStudentsCourses : BaseEntity
 {
-    public class CompletedStudentsCourses  : BaseEntity
-    {
-        
-        public int Id { get; set; }
-        public int StudentId { get; set; }
-        public int CourseId { get; set; }
+    public int Id { get; set; }
+    public int StudentId { get; set; }
+    public int CourseId { get; set; }
 
-        public Course Course { get; set; }
-        public Student Student { get; set; }
+    public Course Course { get; set; }
+    public Student Student { get; set; }
 
     //    public virtual ICollection<Course> CourseList { get; set; }
-      //  public virtual ICollection<Student> StudentList { get; set; }
-    }
+    //  public virtual ICollection<Student> StudentList { get; set; }
 }

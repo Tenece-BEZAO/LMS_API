@@ -20,9 +20,6 @@ namespace LMS.BLL.Interfaces
         Task<IEnumerable<Course>> GetUserCompletedCourses(int userId);
         Task<IEnumerable<Course>> GetAllCompletedCourses();
         Task<bool> MarkAsComplete(CourseEnrollDto markCourseAsCompleted);
-       Task<IEnumerable<Course>> GetUserEnrolledCourses(int studentId);
-
-
-
+        Task<IEnumerable<CourseDto>> GetUserEnrolledCourses(int studentId);
     }
 }

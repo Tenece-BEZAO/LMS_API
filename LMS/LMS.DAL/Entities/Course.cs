@@ -12,39 +12,34 @@ namespace LMS.DAL.Entities
     {
         public string Title { get; set; }
 
-        
+
         public string Detail { get; set; }
 
         public string? HeaderImageUrl { get; set; }
         public decimal? Price { get; set; }
-                                           
+
         public string? VideoResourceUrl { get; set; }
         public string? TextResourceUrl { get; set; }
-        public string? AdditionalResourcesUrl  { get; set; }
+        public string? AdditionalResourcesUrl { get; set; }
         public string CourseType { get; set; }
-        public int InstructorId  { get; set; }
+        public int InstructorId { get; set; }
 
         public virtual Instructor CourseOwner { get; set; }
         public bool IsActive { get; set; }
 
-      //  public virtual Assessment Assessment { get; set; }
+        //  public virtual Assessment Assessment { get; set; }
 
         public virtual ICollection<Assessment> Assessments { get; set; }
 
 
-        public ICollection<CoursePayment> Payments { get; set; }
-
         public virtual ICollection<EnrolledStudentsCourses> EnrolledStudents { get; set; }
 
         public virtual ICollection<CompletedStudentsCourses> StudentsCompleted { get; set; }
-
-
-
     }
 
-   public  enum CourseType
+    public enum CourseType
     {
-        Public  = 1,
+        Public = 1,
         Private
     }
 }

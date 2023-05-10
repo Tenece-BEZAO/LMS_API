@@ -11,4 +11,6 @@ public interface IAssessmentService
     Task<Assessment> GetAssessment(int id);
     Task<bool> DeleteAssessment(int id);
     Task<Status> UpdateAssessment(EditAssessmentDto requestDto);
+    Task<IEnumerable<Assessment>> GetEnrolledAssessmentForAStudent(string studentId);
+    Task<IEnumerable<Assessment>> GetAllCompletedAssessment();
 }

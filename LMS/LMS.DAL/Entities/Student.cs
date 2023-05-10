@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace LMS.DAL.Entities
 {
-    public class Student  : BaseEntity
+    public class Student : BaseEntity
     {
         public string UserId { get; set; }
-        public  AppUser User { get; set; }
+        public AppUser User { get; set; }
         public string FullName { get; set; }
-       
+
         public string Country { get; set; }
         public string State { get; set; }
 
@@ -25,9 +25,7 @@ namespace LMS.DAL.Entities
 
     
         public ICollection<CoursePayment> Payments { get; set; }
-
         public virtual ICollection<EnrolledStudentsCourses> EnrolledCourses { get; set; }
         public virtual ICollection<CompletedStudentsCourses> CompletedCourses { get; set; }
-
     }
 }

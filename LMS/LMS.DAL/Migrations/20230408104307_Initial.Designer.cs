@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LMS.DAL.Migrations
 {
     [DbContext(typeof(LMSAppDbContext))]
-    [Migration("20230405111345_added instructor id to assessment model")]
-    partial class addedinstructoridtoassessmentmodel
+    [Migration("20230408104307_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

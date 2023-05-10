@@ -6,11 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LMS.BLL.Extensions
+namespace LMS.BLL.Extensions;
+
+public static class ApplicationBuilderExtention
 {
-    public static class ApplicationBuilderExtention
-    {
-        public static IApplicationBuilder AddGlobalErrorHandler(this IApplicationBuilder applicationBuilder) 
-            => applicationBuilder.UseMiddleware<GlobalExceptionHandlingMiddleware>();
-    }
+    public static IApplicationBuilder AddGlobalErrorHandler(this IApplicationBuilder applicationBuilder)
+        => applicationBuilder.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 }

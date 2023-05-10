@@ -209,6 +209,7 @@ namespace LMS.DAL.Migrations
                     AssessmentType = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Score = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     StudentId = table.Column<int>(type: "int", nullable: false),
+                    InstructorId = table.Column<int>(type: "int", nullable: false),
                     CourseId = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),

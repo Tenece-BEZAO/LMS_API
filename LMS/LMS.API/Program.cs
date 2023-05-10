@@ -1,15 +1,15 @@
 using LMS.BLL.Extensions;
+using LMS.BLL.Infrastructure;
+using LMS.BLL.Infrastructures.jwt;
 using LMS.DAL;
+using LMS.DAL.Entities.identityEntities;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
-using LMS.BLL.Infrastructure;
-using LMS.DAL.Entities.identityEntities;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using LMS.BLL.Infrastructures.jwt;
 using System.Text;
-using Microsoft.IdentityModel.Tokens;
 
 namespace LMS.API
 {
@@ -24,12 +24,13 @@ namespace LMS.API
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-           // builder.Services.AddSwaggerGen();
+            // builder.Services.AddSwaggerGen();
             builder.Services.AddSwaggerGen(c =>
             {
                 c.EnableAnnotations();
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "LEARNING MANAGEMENT SYSTEM", Version = "v1" });
                 
+
 
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
                 {
@@ -101,12 +102,12 @@ namespace LMS.API
 
 
 
-           // builder.Services.AddScoped<AutoMapper(Assembly.Load("LMS.DAL.Entities"))>
-         //  builder.Services.AddAutoMapper()
-           builder.Services.AddAutoMapper(Assembly.Load("LMS.DAL"));
+            // builder.Services.AddScoped<AutoMapper(Assembly.Load("LMS.DAL.Entities"))>
+            //  builder.Services.AddAutoMapper()
+            builder.Services.AddAutoMapper(Assembly.Load("LMS.DAL"));
             builder.Services.RegisterServices();
             builder.Services.AddHttpContextAccessor();
-            builder.Services.AddIdentity<AppUser, AppRole>(options => 
+            builder.Services.AddIdentity<AppUser, AppRole>(options =>
             options.SignIn.RequireConfirmedAccount = false).AddDefaultTokenProviders()
             .AddEntityFrameworkStores<LMSAppDbContext>();
 

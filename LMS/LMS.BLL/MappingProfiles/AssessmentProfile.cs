@@ -12,5 +12,6 @@ public class AssessmentProfile : Profile
         CreateMap<AssessmentRequestDto, Assessment>();
         CreateMap<Assessment, AssessmentRequestDto>();
         CreateMap<Assessment, AssessmentResponseDto>();
+
     }
 }

@@ -1,15 +1,15 @@
 using LMS.BLL.Extensions;
+using LMS.BLL.Infrastructure;
+using LMS.BLL.Infrastructures.jwt;
 using LMS.DAL;
+using LMS.DAL.Entities.identityEntities;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
-using LMS.BLL.Infrastructure;
-using LMS.DAL.Entities.identityEntities;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using LMS.BLL.Infrastructures.jwt;
 using System.Text;
-using Microsoft.IdentityModel.Tokens;
 
 namespace LMS.API;
 
@@ -31,7 +31,10 @@ public class Program
             c.SwaggerDoc("v1", new OpenApiInfo { Title = "LEARNING MANAGEMENT SYSTEM", Version = "v1" });
 
 
+
+ 
             c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+ 
             {
                 Name = "Authorization",
                 Type = SecuritySchemeType.ApiKey,
@@ -42,7 +45,9 @@ public class Program
                     "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 1safsfsdfdfd\""
             });
 
+
             c.AddSecurityRequirement(new OpenApiSecurityRequirement
+ 
             {
                 {
                     new OpenApiSecurityScheme
@@ -90,6 +95,7 @@ public class Program
             cfg.AddPolicy("Authorization", policy => policy.Requirements.Add(new AuthorizationRequirment()));
         });
 
+
         builder.Services.AddDbContext<LMSAppDbContext>(options =>
         {
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConn"),
@@ -104,6 +110,7 @@ public class Program
         builder.Services.AddHttpContextAccessor();
         builder.Services.AddIdentity<AppUser, AppRole>(options =>
                 options.SignIn.RequireConfirmedAccount = false).AddDefaultTokenProviders()
+ 
             .AddEntityFrameworkStores<LMSAppDbContext>();
 
         builder.Services.AddCors(o => o.AddPolicy("AllowAll", builder =>

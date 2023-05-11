@@ -256,4 +256,9 @@ public class CourseService : ICourseService
 
         return true;
     }
+
+    Task<IEnumerable<Course>> ICourseService.GetUserEnrolledCourses(int studentId)
+    {
+        throw new System.NotImplementedException();
+    }
 }

@@ -50,7 +50,7 @@ namespace LMS.BLL.Implementation
          //   _roleClaimsRepo = _unitOfWork.GetRepository<ApplicationRoleClaim>();
             _userRepo = _unitOfWork.GetRepository<AppUser>();
         }
-        public async Task<string> CreateUser(UserRegistrationRequest request)
+        public async Task<IdentityResult> CreateUser(UserRegistrationRequest request)
         {
             AppUser existingUser = await _userManager.FindByEmailAsync(request.Email);
             
@@ -95,7 +95,7 @@ namespace LMS.BLL.Implementation
             //};
 
             //await _emailService.SendCreateUserEmail(userMailDto);
-            return user.Id;
+            return IdentityResult.Success;
         }
 
 

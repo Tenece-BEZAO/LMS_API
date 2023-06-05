@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using NLog;
 using System.Reflection;
 using System.Text;
 
@@ -18,6 +19,7 @@ namespace LMS.API
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
 
             // Add services to the container.
 
@@ -58,9 +60,6 @@ namespace LMS.API
             },
     });
             });
-
-
-
             builder.Services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -98,15 +97,13 @@ namespace LMS.API
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConn"), m => m.MigrationsAssembly("LMS.DAL"));
 
             });
-
-
-
-
+              
             // builder.Services.AddScoped<AutoMapper(Assembly.Load("LMS.DAL.Entities"))>
             //  builder.Services.AddAutoMapper()
             builder.Services.AddAutoMapper(Assembly.Load("LMS.DAL"));
             builder.Services.RegisterServices();
             builder.Services.AddHttpContextAccessor();
+            builder.Services.AddEmailService(builder.Configuration);
             builder.Services.AddIdentity<AppUser, AppRole>(options =>
             options.SignIn.RequireConfirmedAccount = false).AddDefaultTokenProviders()
             .AddEntityFrameworkStores<LMSAppDbContext>();
@@ -128,14 +125,13 @@ namespace LMS.API
             }
 
             app.UseHttpsRedirection();
-
+            app.UseCors("AllowAll");
             app.UseAuthorization();
-
-
             app.MapControllers();
             app.AddGlobalErrorHandler();
 
             app.Run();
+            
         }
     }
 }

@@ -1,9 +1,13 @@
-﻿using LMS.BLL.Implementation;
+﻿using LMS.BLL.DTOs.Request;
+using LMS.BLL.Implementation;
 using LMS.BLL.Infrastructure.jwt;
 using LMS.BLL.Infrastructures.jwt;
 using LMS.BLL.Interfaces;
 using LMS.DAL;
 using LMS.Repository;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace LMS.BLL.Extensions
@@ -28,6 +32,16 @@ namespace LMS.BLL.Extensions
             services.AddTransient<IRoleService, RoleService>();
 
             services.AddScoped<IAssessmentService, AssessmentService>();
+        }
+
+        public static IServiceCollection AddEmailService(this IServiceCollection services, IConfiguration configuration)
+        {
+            var emailConfig = configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();
+            services.AddSingleton(emailConfig);
+            services.AddScoped<IEmailService, EmailService>();
+            services.AddSingleton<IUrlHelperFactory, UrlHelperFactory>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            return services;
         }
     }
 }

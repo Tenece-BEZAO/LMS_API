@@ -37,7 +37,7 @@ namespace LMS.BLL.Implementation
             {
                 var CreatedUserIdResult = await _authService.CreateUser(new UserRegistrationRequest { Email = student.Email, UserName = student.UserName, Password = student.Password });
 
-                student.UserId = CreatedUserIdResult;
+                student.UserId = CreatedUserIdResult.ToString();
             }
 
             Student newStudent = new Student

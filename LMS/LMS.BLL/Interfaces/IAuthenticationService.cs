@@ -1,6 +1,7 @@
 ﻿using LMS.BLL.DTOs.Request;
 using LMS.BLL.DTOs.Response;
 using LMS.DAL.Entities.identityEntities;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace LMS.BLL.Interfaces
 {
     public interface IAuthenticationService
     {
-        Task<string> CreateUser(UserRegistrationRequest request);
+        Task<IdentityResult> CreateUser(UserRegistrationRequest request);
         Task<AuthenticationResponse> UserLogin(LoginRequest request);
 
         Task<string> ChangePassword(string userId, ChangePasswordRequest request);

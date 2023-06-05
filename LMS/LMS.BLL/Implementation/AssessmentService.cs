@@ -15,6 +15,7 @@ public class AssessmentService : IAssessmentService
     private readonly IUnitOfWork _unitOfWork;
     private readonly UserManager<AppUser> _userManager;
     private readonly IRepository<Assessment> _assessmentRepository;
+    private readonly IRepository<CompletedStudentsAssessment> _completedAssessment;
     private readonly IRepository<Course> _courseRepository;
 
     public AssessmentService(IMapper mapper, IUnitOfWork unitOfWork, UserManager<AppUser> userManager)
@@ -23,6 +24,7 @@ public class AssessmentService : IAssessmentService
         _unitOfWork = unitOfWork;
         _userManager = userManager;
         _assessmentRepository = _unitOfWork.GetRepository<Assessment>();
+        _completedAssessment = _unitOfWork.GetRepository<CompletedStudentsAssessment>();
         _courseRepository = _unitOfWork.GetRepository<Course>();
     }
 
@@ -151,5 +153,36 @@ public class AssessmentService : IAssessmentService
         await _assessmentRepository.DeleteAsync(assessment);
 
         return true;
+    }
+
+    public async Task<IEnumerable<Assessment>> GetEnrolledAssessmentForAStudent(string studentId)
+    {
+        var status = new Status();
+
+        int studentIdInt = int.Parse(studentId);
+        var allAssessments = await _assessmentRepository.GetAllAsync();
+        var enrolledAssessments = allAssessments.Where(x => x.StudentId == studentIdInt);
+
+        if (enrolledAssessments is null || !enrolledAssessments.Any())
+        {
+            status.StatusCode = 0;
+            status.Message = "Enrolled Assessments not found";
+        }
+
+        return enrolledAssessments;
+    }
+
+    public async Task<IEnumerable<Assessment>> GetAllCompletedAssessment()
+    {
+        var status = new Status();
+        var completedAssessments = await _completedAssessment.GetAllAsync();
+
+        if (completedAssessments is null)
+        {
+            status.StatusCode = 0;
+            status.Message = "Completed Assessments not found";
+        }
+
+        return _mapper.Map<IEnumerable<Assessment>>(completedAssessments);
     }
 }

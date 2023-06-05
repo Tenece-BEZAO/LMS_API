@@ -3,11 +3,6 @@ using LMS.DAL.Entities.identityEntities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LMS.DAL
 {
@@ -43,7 +38,6 @@ namespace LMS.DAL
                 .HasForeignKey(fk => fk.CourseId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-
             builder.Entity<EnrolledStudentsCourses>()
                 .HasOne(s => s.Student)
                 .WithMany(a => a.EnrolledCourses)
@@ -63,11 +57,9 @@ namespace LMS.DAL
 
 
         public DbSet<Course> Courses { get; set; }
-
         public DbSet<Student> Students { get; set; }
-
         public DbSet<Instructor> Instructors { get; set; }
-
         public DbSet<Assessment> Assessments { get; set; }
+        public DbSet<CompletedStudentsAssessment> CompletedStudentsAssessments { get; set; }
     }
 }
